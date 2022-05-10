@@ -3,11 +3,10 @@ package com.doomedcat17.gpupriceapi.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -18,6 +17,13 @@ public class GpuModel extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -2071467649181916615L;
     @Column(unique = true, nullable = false)
     private String name;
-
+    @Column(name = "chipset_poducer", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ChipsetProducer chipsetProducer;
+    @ManyToOne
+    @JoinColumn(name = "gpu_series_id")
+    private GpuSeries gpuSeries;
+    @Column(name = "dollar_msrp")
+    private BigDecimal msrpInDollars;
 
 }

@@ -16,13 +16,11 @@ public class GpuListing extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -44696594148361695L;
 
-    @Column(nullable = false)
-    private String name;
     @ManyToOne
-    @JoinColumn(name = "series_id", nullable = false)
-    private GpuSeries series;
+    @JoinColumn(name = "gpu_model", nullable = false)
+    private GpuModel model;
     @ManyToOne
-    @JoinColumn(name =  "manufacturer_id", nullable = false)
+    @JoinColumn(name =  "manufacturer_id", nullable = true)
     private Manufacturer manufacturer;
     @Column(name = "manufacturer_product_code", nullable = false)
     private String manufacturerProductCode;
@@ -39,6 +37,9 @@ public class GpuListing extends BaseEntity implements Serializable {
     private String listingSellerId;
     @Column(name = "relative_path")
     private String relativePath;
+    @Column(name = "condition")
+    @Enumerated(EnumType.STRING)
+    private GpuCondition gpuCondition;
     @Column(name = "is_available")
     private boolean isAvailable;
 
