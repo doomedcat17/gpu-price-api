@@ -20,7 +20,7 @@ public class GpuListing extends BaseEntity implements Serializable {
     @JoinColumn(name = "gpu_model", nullable = false)
     private GpuModel model;
     @ManyToOne
-    @JoinColumn(name =  "manufacturer_id", nullable = true)
+    @JoinColumn(name =  "manufacturer_id")
     private Manufacturer manufacturer;
     @Column(name = "manufacturer_product_code", nullable = false)
     private String manufacturerProductCode;
