@@ -2,7 +2,6 @@ package com.doomedcat17.gpupriceapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
 public class GpuPriceApiApplication {
 
