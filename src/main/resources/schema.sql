@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS currency(
 
 CREATE TABLE IF NOT EXISTS gpu_model(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
-    "name" VARCHAR NOT NULL UNIQUE
+    "name" VARCHAR NOT NULL UNIQUE,
+    dollar_msrp DECIMAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS gpu_series(
@@ -26,8 +27,7 @@ CREATE TABLE IF NOT EXISTS seller(
 );
 CREATE TABLE IF NOT EXISTS gpu_listing(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
-    "name" VARCHAR NOT NULL UNIQUE,
-    series_id INTEGER NOT NULL,
+    model_id INTEGER NOT NULL,
     manufacturer_id INTEGER NOT NULL,
     manufacturer_product_code VARCHAR,
     createdAt TIMESTAMP NOT NULL,
@@ -36,10 +36,11 @@ CREATE TABLE IF NOT EXISTS gpu_listing(
     seller_id INTEGER NOT NULL,
     listing_seller_id VARCHAR NOT NULL,
     relative_path VARCHAR NOT NULL,
+    condition VARCHAR NOT NULL,
     is_available BOOLEAN NOT NULL,
     CONSTRAINT fk_series_id
-        FOREIGN KEY(series_id)
-            REFERENCES gpu_series(id),
+        FOREIGN KEY(model_id)
+            REFERENCES gpu_model(id),
     CONSTRAINT fk_manufacturer_id
         FOREIGN KEY(manufacturer_id)
             REFERENCES manufacturer(id),
