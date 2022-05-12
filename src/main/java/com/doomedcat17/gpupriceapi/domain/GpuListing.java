@@ -28,9 +28,6 @@ public class GpuListing extends BaseEntity implements Serializable {
     private LocalDateTime createdAt;
     private BigDecimal price;
     @ManyToOne
-    @JoinColumn(name = "currnecy")
-    private Currency currency;
-    @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;
     @Column(name = "listing_seller_id")
