@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.provider;
+package com.doomedcat17.gpupriceapi.listing;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
