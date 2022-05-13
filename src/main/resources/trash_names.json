@@ -1,3 +1,7 @@
 [
-  ".*Blade Color.*"
+  ".*blade color.*",
+  ".*desktop.*",
+  ".*charger.*",
+  ".*cable.*",
+  ".*graphics card fan.*"
 ]

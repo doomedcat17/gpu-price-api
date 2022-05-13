@@ -16,6 +16,7 @@ public class TrashListingNames {
 
     public static boolean isTrash(String name) {
         //TODO custom exception
+        name = name.toLowerCase();
         try {
             if (Objects.isNull(trashRegexes)) trashRegexes = loadSet();
             return trashRegexes.stream().anyMatch(name::matches);
