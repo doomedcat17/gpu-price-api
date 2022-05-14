@@ -1,6 +1,5 @@
 package com.doomedcat17.gpupriceapi.listing.search.amazon;
 
-import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListing;
@@ -27,16 +26,18 @@ public class AmazonSearchListingElementsScraper implements SearchListingElements
     public List<SearchListing> getPageListings(Document page, GpuModel gpuModel, Seller seller) {
         Element resultList = page.selectFirst(RESULTS_ELEMENT_SELECTOR);
         return resultList.children().stream()
-                .map(element -> scrapListingElement(element, seller.getCurrency(), gpuModel))
+                .map(element -> scrapListingElement(element, seller, gpuModel))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
     }
 
-    private Optional<SearchListing> scrapListingElement(Element listingElement, Currency currency, GpuModel gpuModel) {
+    private Optional<SearchListing> scrapListingElement(Element listingElement, Seller seller, GpuModel gpuModel) {
         SearchListing searchListing = new SearchListing();
-        searchListing.setCurrency(currency);
+        searchListing.setSeller(seller);
         if (isNotBlank(listingElement)) {
+            String listingPageId = listingElement.attr("data-asin");
+            searchListing.setListingPageId(listingPageId);
             scrapPrice(listingElement, searchListing);
             if (Objects.isNull(searchListing.getPrice())) return Optional.empty();
             scrapNameAndURL(listingElement, searchListing, gpuModel);
@@ -47,7 +48,7 @@ public class AmazonSearchListingElementsScraper implements SearchListingElements
 
     private Optional<Element> getAnchorElement(Element listingElement) {
         Element anchorElement = listingElement.selectFirst(ANCHOR_ELEMENT_SELECTOR);
-        if (Objects.isNull(anchorElement) || TrashListingNames.isTrash(anchorElement.text())) return Optional.empty();
+        if (Objects.isNull(anchorElement) || TrashListingNames.isTrashName(anchorElement.text())) return Optional.empty();
         else return Optional.of(anchorElement);
     }
 

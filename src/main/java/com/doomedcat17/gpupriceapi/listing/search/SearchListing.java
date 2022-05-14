@@ -1,6 +1,6 @@
 package com.doomedcat17.gpupriceapi.listing.search;
 
-import com.doomedcat17.gpupriceapi.domain.Currency;
+import com.doomedcat17.gpupriceapi.domain.Seller;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +10,10 @@ import java.math.BigDecimal;
 @Setter
 public class SearchListing {
 
+
+    private String listingPageId;
     private String name;
     private String url;
     private BigDecimal price;
-    private Currency currency;
+    private Seller seller;
 }
