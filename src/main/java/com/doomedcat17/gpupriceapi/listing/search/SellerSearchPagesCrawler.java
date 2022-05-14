@@ -1,14 +1,12 @@
 package com.doomedcat17.gpupriceapi.listing.search;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.jsoup.nodes.Document;
 
-import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
 public interface SellerSearchPagesCrawler {
 
-    Optional<HtmlPage> getFirst(GpuModel model) throws IOException;
 
-    Optional<HtmlPage> getNext(HtmlPage currentPage) throws IOException;
+    List<Document> getSearchPages(GpuModel model, String searchUrl);
 }
