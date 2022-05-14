@@ -34,15 +34,15 @@ class AmazonListingsCrawlerTest {
     })
     void shouldCrawlAmazon(String url) throws IOException {
         AmazonSearchPagesCrawler amazonListingsCrawler =
-                new AmazonSearchPagesCrawler(url, WebClientProvider.getClient());
-        Optional<HtmlPage> htmlPage = amazonListingsCrawler.getFirst(gpuModel);
+                new AmazonSearchPagesCrawler(WebClientProvider.getClient());
+        Optional<HtmlPage> htmlPage = amazonListingsCrawler.getFirst(gpuModel, url);
         int counter = 1;
         while (htmlPage.isPresent()) {
             HtmlElement currentPageElement = htmlPage.get().querySelector(".s-pagination-item.s-pagination-selected");
             int currentPage = Integer.parseInt(currentPageElement.getTextContent());
             if (currentPage != counter) fail();
             counter++;
-            htmlPage = amazonListingsCrawler.getNext(htmlPage.get());
+            htmlPage = amazonListingsCrawler.getNext(htmlPage.get(), url);
         }
     }
 

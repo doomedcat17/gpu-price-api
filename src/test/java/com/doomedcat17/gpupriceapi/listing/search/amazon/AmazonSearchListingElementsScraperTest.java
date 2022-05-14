@@ -24,14 +24,14 @@ class AmazonSearchListingElementsScraperTest {
     static void init() {
         gpuModel = new GpuModel();
         gpuModel.setName("rtx 3080");
-        gpuModel.setRegex(".*.?rtx.?.?3080.?.*");
+        gpuModel.setRegex(".*rtx.?3080(?:(?!.?ti.?)(?:(?!.*super).*)).*");
     }
 
     @ParameterizedTest
     @CsvSource({
-            "https://www.amazon.de/,EUR,listings_DE_1.html,13",
-            "https://www.amazon.com/,USD,listings_COM_1.html,21",
-            "https://www.amazon.com/,GBP,listings_UK_1.html,6"
+            "https://www.amazon.de/,EUR,listings_DE_1.html,7",
+            "https://www.amazon.com/,USD,listings_COM_1.html,12",
+            "https://www.amazon.com/,GBP,listings_UK_1.html,3"
     })
     void shouldScrapSearchListingsFromAmazonDE(String url, String currencyCode, String filename, int expectedNumberOfListings) {
         //given
