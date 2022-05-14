@@ -20,6 +20,8 @@ public class Seller extends BaseEntity implements Serializable {
     private String name;
     @Column(unique = true, nullable = false)
     private String url;
+    @Column(nullable = false)
+    private String searchUrl;
     @ManyToOne
     private Currency currency;
 

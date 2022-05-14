@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -27,4 +29,16 @@ public class GpuModel extends BaseEntity implements Serializable {
     @Column(name = "dollar_msrp")
     private BigDecimal msrpInDollars;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GpuModel gpuModel = (GpuModel) o;
+        return Objects.equals(name, gpuModel.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
