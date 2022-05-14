@@ -1,10 +1,12 @@
 package com.doomedcat17.gpupriceapi.listing.search;
 
+import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,8 +16,7 @@ public class TrashListingNames {
 
     private static Set<String> trashRegexes;
 
-    public static boolean isTrash(String name) {
-        //TODO custom exception
+    public static boolean isTrashName(String name) {
         name = name.toLowerCase();
         try {
             if (Objects.isNull(trashRegexes)) trashRegexes = loadSet();
@@ -24,6 +25,13 @@ public class TrashListingNames {
             e.printStackTrace();
         }
         return false;
+    }
+
+    //contains more than one gpu model name. It's common for irrelevant listings
+    public static boolean isTrashListing(SearchListing searchListing, GpuModel gpuModel, List<GpuModel> knownGpuModels) {
+        return knownGpuModels.stream()
+                .filter(knownGpuModel -> !knownGpuModel.equals(gpuModel))
+                .anyMatch(knownGpuModel -> searchListing.getName().toLowerCase().matches(knownGpuModel.getRegex()));
     }
 
     private static Set<String> loadSet() throws IOException {
