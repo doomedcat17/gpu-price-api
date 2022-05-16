@@ -1,0 +1,8 @@
+[
+  {
+    "name": "RTX 3080",
+    "regex": ".*rtx.?3080(?:(?!.?ti.?)(?:(?!.*super).*)).*",
+    "chipsetProducer": "NVIDIA",
+    "msrpInDollars": 699.00
+  }
+]
