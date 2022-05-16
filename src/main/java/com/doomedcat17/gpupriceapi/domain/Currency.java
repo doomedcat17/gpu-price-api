@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -14,5 +16,8 @@ import java.io.Serializable;
 public class Currency implements Serializable {
     @Id
     @Column(unique = true, nullable = false)
-    protected String code;
+    private String code;
+    private BigDecimal rateInUSD;
+    private LocalDate effectiveDate;
+
 }
