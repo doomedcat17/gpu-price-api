@@ -2,7 +2,9 @@ CREATE sequence IF NOT EXISTS main_sequence START 1 INCREMENT 1;
 
 CREATE TABLE IF NOT EXISTS currency(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
-    code VARCHAR NOT NULL UNIQUE
+    code VARCHAR NOT NULL UNIQUE,
+    rate_in_USD DECIMAL NOT NULL,
+    effective_date DATE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS gpu_model(
