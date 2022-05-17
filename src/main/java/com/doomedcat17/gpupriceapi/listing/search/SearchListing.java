@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class SearchListing {
-
-
     private String listingPageId;
     private String name;
     private String url;
