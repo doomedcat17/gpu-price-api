@@ -1,11 +1,15 @@
 package com.doomedcat17.gpupriceapi.listing.search.amazon;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
+import com.doomedcat17.gpupriceapi.exception.listing.seller.CrawlerFailingStatusCodeException;
 import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawler;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -18,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Slf4j
 public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
 
     private final String SEARCH_PHRASE_PARAMETER = "&k=";
@@ -40,8 +45,7 @@ public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
     public Optional<HtmlPage> getFirst(GpuModel model, String searchUrl) throws IOException {
         String url = searchUrl +SEARCH_PHRASE_PARAMETER+
                 URLEncoder.encode(model.getName(), StandardCharsets.UTF_8);
-        HtmlPage listingsPage = webClient.getPage(url);
-        return Optional.of(listingsPage);
+        return getPage(url);
     }
 
 
@@ -51,10 +55,22 @@ public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
             String elementClasses = nextElement.getAttribute("class");
             if (!elementClasses.contains("s-pagination-disabled")) {
                 String nextPageRelativePath = nextElement.getAttribute("href");
-                return Optional.of(webClient.getPage(searchUrl + nextPageRelativePath));
+                return getPage(searchUrl + nextPageRelativePath);
             }
         }
         return Optional.empty();
     }
+
+    @SneakyThrows
+    private Optional<HtmlPage> getPage(String url) throws IOException {
+        try {
+            HtmlPage page = webClient.getPage(url);
+            webClient.waitForBackgroundJavaScript(2000);
+            return Optional.of(page);
+        } catch (FailingHttpStatusCodeException e) {
+            throw new CrawlerFailingStatusCodeException();
+        }
+    }
+
 
 }

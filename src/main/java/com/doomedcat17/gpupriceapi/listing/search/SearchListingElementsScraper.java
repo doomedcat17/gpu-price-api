@@ -7,5 +7,5 @@ import org.jsoup.nodes.Document;
 import java.util.List;
 
 public interface SearchListingElementsScraper {
-    List<SearchListing> getPageListings(Document page, GpuModel gpuModel, Seller seller);
+    List<SearchListing> scrap(Document page, GpuModel gpuModel, Seller seller);
 }
