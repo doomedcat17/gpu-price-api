@@ -2,7 +2,7 @@
   {
     "name": "Amazon DE",
     "url" : "https://amazon.de/",
-    "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss",
+    "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
     "currency": {
       "code": "EUR"
     }
