@@ -14,7 +14,7 @@ public class NbpRatesToCurrencyMapper {
 
     public List<Currency> map(List<NbpRate> nbpRates, NbpRate usdRate, LocalDate effectiveDate) {
         List<Currency> currencies = new ArrayList<>();
-        for (NbpRate nbpRate: nbpRates) {
+        for (NbpRate nbpRate : nbpRates) {
             currencies.add(mapRate(nbpRate, usdRate, effectiveDate));
         }
         Currency usdCurrency = new Currency();
@@ -26,17 +26,20 @@ public class NbpRatesToCurrencyMapper {
     }
 
     private Currency mapRate(NbpRate nbpRate, NbpRate usdRate, LocalDate effectiveDate) {
+        int scale = 4;
+        RoundingMode roundingMode = RoundingMode.HALF_EVEN;
         Currency currency = new Currency();
-        if (nbpRate.getCode().equals("USD")) {
-            nbpRate.setCode("PLN");
-            nbpRate.setMid(BigDecimal.ONE);
-        }
-        currency.setCode(nbpRate.getCode());
         currency.setEffectiveDate(effectiveDate);
-        BigDecimal rate =
-                nbpRate.getMid()
-                        .divide(usdRate.getMid(),4, RoundingMode.HALF_EVEN);
-        currency.setRateInUSD(rate);
+        if (nbpRate.getCode().equals("USD")) {
+            currency.setCode("PLN");
+            currency.setRateInUSD(BigDecimal.ONE.divide(usdRate.getMid(), scale, roundingMode));
+        } else {
+            currency.setCode(nbpRate.getCode());
+            BigDecimal rate =
+                    nbpRate.getMid()
+                            .divide(usdRate.getMid(), scale, roundingMode);
+            currency.setRateInUSD(rate);
+        }
         return currency;
     }
 }
