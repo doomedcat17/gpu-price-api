@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ResourceLoader {
 
-    //TODO custom exception
     public static List<GpuModel> loadGpuModelsFromFile() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         InputStream inputStream = ResourceLoader.class.getClassLoader().getResourceAsStream("init/models.json");
