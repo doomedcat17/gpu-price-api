@@ -2,6 +2,7 @@ package com.doomedcat17.gpupriceapi.listing.search;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -43,6 +44,11 @@ class TrashListingNamesTest {
         //when
         assertTrue(TrashListingNames.isTrashListing(searchListing, model, knownGpuModels));
 
+    }
+
+    @Test
+    void isTrashName() {
+        assertTrue(TrashListingNames.isTrashName("Bitspower Classic GPU Water Block with GPU Backplate, RTX 3080/3090 Gaming Trio"));
     }
 
 }
