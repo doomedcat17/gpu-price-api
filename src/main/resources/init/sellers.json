@@ -6,5 +6,29 @@
     "currency": {
       "code": "EUR"
     }
+  },
+  {
+    "name": "Amazon UK",
+    "url" : "https://amazon.co.uk/",
+    "searchUrl": "https://www.amazon.co.uk/s?rh=n%3A428655031%2Cn%3A430500031&dc&qid=1652382184&rnid=1642204031&ref=sr_nr_n_2",
+    "currency": {
+      "code": "GBP"
+    }
+  },
+  {
+    "name": "Amazon US",
+    "url" : "https://amazon.com/",
+    "searchUrl": "https://www.amazon.com/s?rh=n%3A17923671011%2Cn%3A284822&dc&crid=7O2RUF9YETFZ&qid=1652380614&rnid=2941120011&ref=sr_nr_n_2",
+    "currency": {
+      "code": "USD"
+    }
+  },
+  {
+    "name": "Amazon PL",
+    "url" : "https://www.amazon.pl/s?rh=n%3A20788429031%2Cn%3A20788599031&dc&__mk_pl_PL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1VN2DUZ4BZHWS&qid=1652382273&rnid=20876086031&ref=sr_nr_n_2",
+    "searchUrl": "https://www.amazon.pl/s?rh=n%3A20788429031%2Cn%3A20788599031&dc&__mk_pl_PL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1VN2DUZ4BZHWS&qid=1652382273&rnid=20876086031&ref=sr_nr_n_2",
+    "currency": {
+      "code": "PLN"
+    }
   }
 ]

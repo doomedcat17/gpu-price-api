@@ -1,7 +1,12 @@
 [
   ".*blade color.*",
+  ".*blade colour.*",
   ".*desktop.*",
   ".*charger.*",
   ".*cable.*",
-  ".*graphics card fan.*"
+  ".*graphics card fan.*",
+  ".*gpu holder.*",
+  ".*graphics card holder.*",
+  ".*Phanteks.*",
+  ".*Bitspower.*"
 ]
