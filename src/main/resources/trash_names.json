@@ -6,7 +6,21 @@
   ".*cable.*",
   ".*graphics card fan.*",
   ".*gpu holder.*",
+  ".*card holder.*",
   ".*graphics card holder.*",
-  ".*Phanteks.*",
-  ".*Bitspower.*"
+  ".*phanteks.*",
+  ".*replacement.*",
+  ".*bitspower.*",
+  ".*alphacool.*",
+  ".*wwwfzs.*",
+  ".*water blocks.*",
+  ".*youngran.*",
+  ".*klova.*",
+  ".*inrobert.*",
+  ".*water.*blocks.*",
+  ".*compatible.*",
+  ".*miner frame.*",
+  ".*card.?fan.*",
+  ".*kjghj.*",
+  ".*all in one.*"
 ]
