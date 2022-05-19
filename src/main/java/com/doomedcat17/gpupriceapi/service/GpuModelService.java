@@ -1,30 +1,32 @@
-package com.doomedcat17.gpupriceapi.init;
+package com.doomedcat17.gpupriceapi.service;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.repository.GpuModelRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-@Transactional
+@Service
 @AllArgsConstructor
-public class GpuModelsLoader {
+public class GpuModelService {
 
-    private GpuModelRepository gpuModelRepository;
+    private GpuModelRepository repository;
 
-    public void loadGpus(List<GpuModel> gpuModels) {
+    public List<GpuModel> getGpuModels() {
+        return repository.findAll();
+    }
+
+    public void saveAll(List<GpuModel> gpuModels) {
         for (GpuModel model: gpuModels) {
-            Optional<GpuModel> presentModel = gpuModelRepository.getGpuModelByName(model.getName());
+            Optional<GpuModel> presentModel = repository.getGpuModelByName(model.getName());
             if (presentModel.isPresent()) {
                 GpuModel gpuModel = presentModel.get();
                 gpuModel.setRegex(model.getRegex());
                 gpuModel.setMsrpInDollars(model.getMsrpInDollars());
                 gpuModel.setChipsetProducer(model.getChipsetProducer());
-            } else gpuModelRepository.save(model);
+            } else repository.save(model);
         }
     }
 }

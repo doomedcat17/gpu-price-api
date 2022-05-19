@@ -26,7 +26,6 @@ public class CurrencyService {
                 presentCurrency.get().setRateInUSD(currency.getRateInUSD());
             } else currencyRepository.save(currency);
         }
-
-
     }
+
 }
