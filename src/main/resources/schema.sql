@@ -1,8 +1,7 @@
 CREATE sequence IF NOT EXISTS main_sequence START 1 INCREMENT 1;
 
 CREATE TABLE IF NOT EXISTS currency(
-    id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
-    code VARCHAR NOT NULL UNIQUE,
+    code VARCHAR PRIMARY KEY ,
     rate_in_USD DECIMAL NOT NULL,
     effective_date DATE NOT NULL
 );
@@ -19,18 +18,19 @@ CREATE TABLE IF NOT EXISTS seller(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
     "name" VARCHAR NOT NULL UNIQUE,
     url VARCHAR NOT NULL UNIQUE,
-    searchUrl VARCHAR NOT NULL UNIQUE,
-    currency_id INTEGER NOT NULL,
+    search_url VARCHAR NOT NULL UNIQUE,
+    currency_code VARCHAR NOT NULL,
     CONSTRAINT fk_currency_id
-        FOREIGN KEY(currency_id)
-                REFERENCES currency(id)
+        FOREIGN KEY(currency_code)
+                REFERENCES currency(code)
 );
 CREATE TABLE IF NOT EXISTS gpu_listing(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
     listing_page_id VARCHAR NOT NULL,
+    "name" VARCHAR NOT NULL,
     model_id INTEGER NOT NULL,
-    createdAt TIMESTAMP NOT NULL,
-    lastChecked TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    last_checked TIMESTAMP NOT NULL,
     price DECIMAL NOT NULL,
     seller_id INTEGER NOT NULL,
     relative_path VARCHAR NOT NULL,

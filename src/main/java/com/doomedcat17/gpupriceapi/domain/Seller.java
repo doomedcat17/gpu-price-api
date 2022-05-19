@@ -3,10 +3,7 @@ package com.doomedcat17.gpupriceapi.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -23,6 +20,7 @@ public class Seller extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String searchUrl;
     @ManyToOne
+    @JoinColumn(name = "currency_code")
     private Currency currency;
 
     @OneToMany(mappedBy = "seller")
