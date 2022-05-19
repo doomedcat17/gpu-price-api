@@ -16,18 +16,17 @@ import java.util.List;
 
 @AllArgsConstructor
 public class ListingProvider {
-
-    private SellerSearchPagesCrawler crawler;
-    private SearchListingElementsScraper scraper;
     private List<GpuModel> knownGpuModels;
 
-    public List<GpuListing> getByModel(GpuModel gpuModel, Seller seller) {
+    public List<GpuListing> getByModel(GpuModel gpuModel, Seller seller, SellerSearchPagesCrawler crawler, SearchListingElementsScraper scraper) {
         List<Document> searchPages = crawler.getSearchPages(gpuModel, seller.getSearchUrl());
         List<SearchListing> searchListings = new ArrayList<>();
-        searchPages.forEach(searchPage -> searchListings.addAll(scraper.getPageListings(searchPage, gpuModel, seller)));
-        return searchListings.stream()
+        searchPages.forEach(searchPage -> searchListings.addAll(scraper.scrap(searchPage, gpuModel, seller)));
+        List<GpuListing> gpuListings = searchListings.stream()
                 .filter(searchListing -> !TrashListingNames.isTrashListing(searchListing, gpuModel, knownGpuModels))
                 .map(ListingMapper.INSTANCE::searchListingToGpuListing)
                 .toList();
+        gpuListings.forEach(gpuListing -> gpuListing.setModel(gpuModel));
+        return gpuListings;
     }
 }
