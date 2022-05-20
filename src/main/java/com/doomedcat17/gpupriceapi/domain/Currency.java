@@ -17,6 +17,7 @@ public class Currency implements Serializable {
     @Id
     @Column(unique = true, nullable = false)
     private String code;
+    private String symbol;
     @Column(name = "rate_in_USD")
     private BigDecimal rateInUSD;
     @Column(name = "effective_date")

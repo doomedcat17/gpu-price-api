@@ -6,6 +6,7 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListing;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListingElementsScraper;
 import com.doomedcat17.gpupriceapi.listing.search.TrashListingNames;
+import com.doomedcat17.gpupriceapi.listing.search.scraper.PriceScraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +25,7 @@ public class AmazonSearchListingElementsScraper implements SearchListingElements
     private final String PRICE_ELEMENT_SELECTOR = ".a-price .a-offscreen";
     private final String RESULTS_ELEMENT_SELECTOR = ".s-result-list.s-main-slot";
     private final BigDecimal PRICE_LOWER_LIMIT_OF_MSRP = new BigDecimal("0.30");
+    private PriceScraper priceScraper = new PriceScraper();
 
     @Override
     public List<SearchListing> scrap(Document page, GpuModel gpuModel, Seller seller) {
@@ -42,9 +44,12 @@ public class AmazonSearchListingElementsScraper implements SearchListingElements
         if (isNotBlank(listingElement)) {
             String listingPageId = listingElement.attr("data-asin");
             searchListing.setListingPageId(listingPageId);
-            scrapPrice(listingElement, searchListing);
-            if (Objects.isNull(searchListing.getPrice()) ||
-                    !isPriceAboveLowerLimit(gpuModel, seller.getCurrency(), searchListing)) return Optional.empty();
+            Element priceElement = listingElement.selectFirst(PRICE_ELEMENT_SELECTOR);
+            if (Objects.isNull(priceElement)) return Optional.empty();
+            BigDecimal price = priceScraper.scrap(priceElement, seller.getCurrency());
+            if (price.equals(BigDecimal.ZERO) ||
+                    !isPriceAboveLowerLimit(gpuModel, seller.getCurrency(), price)) return Optional.empty();
+            searchListing.setPrice(price);
             scrapNameAndURL(listingElement, searchListing, gpuModel);
             if (Objects.nonNull(searchListing.getUrl()) || Objects.nonNull(searchListing.getName()))
                 return Optional.of(searchListing);
@@ -75,39 +80,9 @@ public class AmazonSearchListingElementsScraper implements SearchListingElements
         }
     }
 
-    private void scrapPrice(Element listingElement, SearchListing searchListing) {
-        Element priceElement = listingElement.selectFirst(PRICE_ELEMENT_SELECTOR);
-        try {
-            if (Objects.nonNull(priceElement)) {
-                String priceString = normalizePriceString(priceElement.text());
-                if (!priceString.isBlank()) {
-                    searchListing.setPrice(new BigDecimal(priceString));
-                }
-            }
-        } catch (Exception e) {
-            log.debug(priceElement.outerHtml());
-        }
-    }
-
-    private String normalizePriceString(String priceString) {
-        //removing all white chars
-        priceString = priceString.replaceAll("\\s", "").replace("zł", "").trim();
-        if (!Character.isDigit(priceString.charAt(0))) priceString = priceString.substring(1);
-        // polish Amazon uses coma instead of dot for floating point
-        if (!priceString.contains(".")) {
-            StringBuilder stringBuilder = new StringBuilder(priceString);
-            int index = priceString.lastIndexOf(",");
-            stringBuilder.replace(index, index+1, ".");
-            priceString = stringBuilder.toString();
-        }
-        priceString = priceString.replace(",", "");
-        return priceString;
-
-    }
-
-    private boolean isPriceAboveLowerLimit(GpuModel gpuModel, Currency currency, SearchListing searchListing) {
+    private boolean isPriceAboveLowerLimit(GpuModel gpuModel, Currency currency, BigDecimal price) {
         BigDecimal msrp = gpuModel.getMsrpInDollars().multiply(currency.getRateInUSD());
-        return  searchListing.getPrice()
+        return price
                 .divide(msrp, 2, RoundingMode.HALF_EVEN)
                 .compareTo(PRICE_LOWER_LIMIT_OF_MSRP) > 0;
     }

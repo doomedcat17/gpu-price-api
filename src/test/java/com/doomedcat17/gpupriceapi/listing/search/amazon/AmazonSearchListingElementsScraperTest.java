@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AmazonSearchListingElementsScraperTest {
 
@@ -31,18 +32,19 @@ class AmazonSearchListingElementsScraperTest {
 
     @ParameterizedTest
     @CsvSource({
-            "https://www.amazon.de/,EUR,1.06,listings_DE_1.html,7",
-            "https://www.amazon.com/,USD,1.00,listings_COM_1.html,11",
-            "https://www.amazon.co.uk/,GBP,1.25,listings_UK_1.html,3",
-            "https://www.amazon.pl/,PLN,0.23,listings_PL_1.html,12"
+            "https://www.amazon.de/,EUR,€,1.06,listings_DE_1.html,7",
+            "https://www.amazon.com/,USD,$,1.00,listings_COM_1.html,11",
+            "https://www.amazon.co.uk/,GBP,£,1.25,listings_UK_1.html,3",
+            "https://www.amazon.pl/,PLN,zł,0.23,listings_PL_1.html,12"
     })
-    void shouldScrapSearchListingsFromAmazonDE(String url, String currencyCode, String rateInUSD, String filename, int expectedNumberOfListings) {
+    void shouldScrapSearchListingsFromAmazonDE(String url, String currencyCode, String currencySymbol, String rateInUSD, String filename, int expectedNumberOfListings) {
         //given
         Seller seller = new Seller();
         seller.setUrl(url);
         Currency currency = new Currency();
         currency.setCode(currencyCode);
         currency.setRateInUSD(new BigDecimal(rateInUSD));
+        currency.setSymbol(currencySymbol);
         seller.setCurrency(currency);
         Document page = TestDataProvider.loadElementFromHTML("src/test/resources/pages/amazon/"+filename);
 
@@ -51,5 +53,7 @@ class AmazonSearchListingElementsScraperTest {
 
         //then
         assertEquals(expectedNumberOfListings, searchListings.size());
+        assertTrue(searchListings.stream().noneMatch(searchListing -> searchListing.getName().isBlank()));
+        assertTrue(searchListings.stream().noneMatch(searchListing -> searchListing.getPrice().compareTo(BigDecimal.ZERO) <= 0));
     }
 }

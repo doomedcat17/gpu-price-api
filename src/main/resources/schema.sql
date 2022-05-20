@@ -1,7 +1,8 @@
 CREATE sequence IF NOT EXISTS main_sequence START 1 INCREMENT 1;
 
 CREATE TABLE IF NOT EXISTS currency(
-    code VARCHAR PRIMARY KEY ,
+    code VARCHAR PRIMARY KEY,
+    symbol VARCHAR NOT NULL,
     rate_in_USD DECIMAL NOT NULL,
     effective_date DATE NOT NULL
 );
