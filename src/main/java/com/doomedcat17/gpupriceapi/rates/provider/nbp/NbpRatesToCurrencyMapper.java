@@ -15,6 +15,8 @@ public class NbpRatesToCurrencyMapper {
     public List<Currency> map(List<NbpRate> nbpRates, NbpRate usdRate, LocalDate effectiveDate) {
         List<Currency> currencies = new ArrayList<>();
         for (NbpRate nbpRate : nbpRates) {
+            //XDR is not a currency
+            if (nbpRate.getCode().equals("XDR")) continue;
             currencies.add(mapRate(nbpRate, usdRate, effectiveDate));
         }
         Currency usdCurrency = new Currency();
