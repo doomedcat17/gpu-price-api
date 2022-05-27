@@ -27,4 +27,6 @@ public class Seller extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "seller")
     private Set<GpuListing> listings;
+
+
 }
