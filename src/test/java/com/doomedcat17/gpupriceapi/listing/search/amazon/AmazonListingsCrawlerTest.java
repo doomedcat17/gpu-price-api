@@ -1,7 +1,7 @@
 package com.doomedcat17.gpupriceapi.listing.search.amazon;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
-import com.doomedcat17.gpupriceapi.listing.WebClientProvider;
+import com.doomedcat17.gpupriceapi.listing.webclient.PoliteWebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,6 +24,7 @@ class AmazonListingsCrawlerTest {
         gpuModel.setName("RTX 3060");
     }
 
+    //TODO make in 503 resistant
     @ParameterizedTest
     @ValueSource(strings = {
             "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss",
@@ -34,7 +35,7 @@ class AmazonListingsCrawlerTest {
     })
     void shouldCrawlAmazon(String url) throws IOException {
         AmazonSearchPagesCrawler amazonListingsCrawler =
-                new AmazonSearchPagesCrawler(WebClientProvider.getClient());
+                new AmazonSearchPagesCrawler(new PoliteWebClient());
         Optional<HtmlPage> htmlPage = amazonListingsCrawler.getFirst(gpuModel, url);
         int counter = 1;
         while (htmlPage.isPresent()) {

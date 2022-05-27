@@ -8,7 +8,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,28 +27,26 @@ public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
     private final String SEARCH_PHRASE_PARAMETER = "&k=";
     private final WebClient webClient;
 
-
     @Override
     public List<Document> getSearchPages(GpuModel model, String searchUrl) {
         List<Document> pages = new ArrayList<>();
-        try(webClient) {
-            Optional<HtmlPage> foundPage = getFirst(model, searchUrl);
-            while (foundPage.isPresent()) {
-                pages.add(Jsoup.parse(foundPage.get().asXml()));
-                foundPage = getNext(foundPage.get(), searchUrl);
-            }
-        } catch (IOException ignored) {}
+        Optional<HtmlPage> foundPage = getFirst(model, searchUrl);
+        while (foundPage.isPresent()) {
+            pages.add(Jsoup.parse(foundPage.get().asXml()));
+            foundPage = getNext(foundPage.get(), searchUrl);
+        }
+        webClient.close();
         return pages;
     }
 
-    public Optional<HtmlPage> getFirst(GpuModel model, String searchUrl) throws IOException {
-        String url = searchUrl +SEARCH_PHRASE_PARAMETER+
+    public Optional<HtmlPage> getFirst(GpuModel model, String searchUrl) {
+        String url = searchUrl + SEARCH_PHRASE_PARAMETER +
                 URLEncoder.encode(model.getName(), StandardCharsets.UTF_8);
         return getPage(url);
     }
 
 
-    public Optional<HtmlPage> getNext(HtmlPage currentPage, String searchUrl) throws IOException {
+    public Optional<HtmlPage> getNext(HtmlPage currentPage, String searchUrl) {
         HtmlElement nextElement = currentPage.querySelector(".s-pagination-next");
         if (Objects.nonNull(nextElement)) {
             String elementClasses = nextElement.getAttribute("class");
@@ -61,14 +58,13 @@ public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
         return Optional.empty();
     }
 
-    @SneakyThrows
-    private Optional<HtmlPage> getPage(String url) throws IOException {
+
+    private Optional<HtmlPage> getPage(String url) {
         try {
             HtmlPage page = webClient.getPage(url);
-            webClient.waitForBackgroundJavaScript(2000);
             return Optional.of(page);
-        } catch (FailingHttpStatusCodeException e) {
-            throw new CrawlerFailingStatusCodeException();
+        } catch (FailingHttpStatusCodeException | IOException e) {
+            throw new CrawlerFailingStatusCodeException(e.getMessage());
         }
     }
 
