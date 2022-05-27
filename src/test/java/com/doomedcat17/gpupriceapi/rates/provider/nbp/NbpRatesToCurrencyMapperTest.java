@@ -29,7 +29,7 @@ class NbpRatesToCurrencyMapperTest {
         //then
         assertNotNull(currencies);
         assertFalse(currencies.isEmpty());
-        assertEquals(35, currencies.size());
+        assertEquals(34, currencies.size());
 
 
     }
