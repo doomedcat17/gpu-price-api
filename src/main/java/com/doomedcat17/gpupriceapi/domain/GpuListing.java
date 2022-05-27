@@ -1,7 +1,6 @@
 package com.doomedcat17.gpupriceapi.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +15,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class GpuListing extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -44696594148361695L;
@@ -40,6 +42,4 @@ public class GpuListing extends BaseEntity implements Serializable {
     private String relativePath;
     @Column(name = "is_available")
     private boolean isAvailable;
-
-
 }

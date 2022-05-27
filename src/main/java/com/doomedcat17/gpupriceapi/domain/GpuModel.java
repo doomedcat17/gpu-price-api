@@ -1,7 +1,6 @@
 package com.doomedcat17.gpupriceapi.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +14,9 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class GpuModel extends BaseEntity implements Serializable {
 
     @Serial

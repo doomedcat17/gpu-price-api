@@ -1,7 +1,6 @@
 package com.doomedcat17.gpupriceapi.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +9,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Seller extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 8740759782744845185L;
