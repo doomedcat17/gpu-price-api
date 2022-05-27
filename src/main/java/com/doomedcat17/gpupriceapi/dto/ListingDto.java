@@ -1,5 +1,6 @@
 package com.doomedcat17.gpupriceapi.dto;
 
+import com.doomedcat17.gpupriceapi.domain.ChipsetProducer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 public class ListingDto {
     private String name;
     private String model;
+    private ChipsetProducer chipsetProducer;
     private String seller;
     private String currencyCode;
     private BigDecimal price;

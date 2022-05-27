@@ -58,7 +58,6 @@ public class GpuListingService {
         return gpuListings.stream()
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, currency.getCode(), currency))
                 .toList();
-
     }
 
     private Specification<GpuListing> getSpec(GpuModel gpuModel, Set<Seller> sellers, LocalDateTime after, LocalDateTime before, boolean isAvailable) {

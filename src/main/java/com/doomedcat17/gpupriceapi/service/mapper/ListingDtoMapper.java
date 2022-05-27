@@ -17,6 +17,7 @@ public interface ListingDtoMapper {
     @Mapping(source = "currencyCode", target = "currencyCode")
     @Mapping(source = "listing.seller.name", target = "seller")
     @Mapping(source = "listing.model.name", target = "model")
+    @Mapping(source = "listing.model.chipsetProducer", target = "chipsetProducer")
     ListingDto gpuListingToListingDto(GpuListing listing, String currencyCode, @Context Currency targetCurrency);
 
     default BigDecimal mapPrice(GpuListing listing, @Context Currency targetCurrency) {
