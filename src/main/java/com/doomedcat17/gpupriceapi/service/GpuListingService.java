@@ -1,31 +1,87 @@
 package com.doomedcat17.gpupriceapi.service;
 
-import com.doomedcat17.gpupriceapi.domain.GpuListing;
-import com.doomedcat17.gpupriceapi.domain.Seller;
+import com.doomedcat17.gpupriceapi.domain.*;
+import com.doomedcat17.gpupriceapi.dto.GpuListingsDto;
+import com.doomedcat17.gpupriceapi.repository.CurrencyRepository;
 import com.doomedcat17.gpupriceapi.repository.GpuListingRepository;
+import com.doomedcat17.gpupriceapi.repository.GpuModelRepository;
+import com.doomedcat17.gpupriceapi.repository.SellerRepository;
+import com.doomedcat17.gpupriceapi.service.mapper.GpuListingsMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class GpuListingService {
 
-    private GpuListingRepository repository;
+    private GpuListingRepository gpuListingRepository;
+    private GpuModelRepository gpuModelRepository;
+    private CurrencyRepository currencyRepository;
+    private SellerRepository sellerRepository;
+    private GpuListingsMapper gpuListingsMapper;
+
+
+    public List<GpuListingsDto> getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, boolean isActual) {
+        Optional<Currency> foundCurrency = currencyRepository.findByCode(currencyCode);
+        if (foundCurrency.isEmpty()) throw new IllegalArgumentException("Invalid currency code");
+        Currency currency = foundCurrency.get();
+
+        GpuModel gpuModel = null;
+        if (!modelName.isBlank()) {
+            Optional<GpuModel> foundModel = gpuModelRepository.getGpuModelByName(modelName);
+            if (foundModel.isPresent()) {
+                gpuModel = foundModel.get();
+            } else throw new IllegalArgumentException("Invalid modelName");
+        }
+
+        Set<Seller> sellers = Set.of();
+        if (Objects.nonNull(sellerNames)) {
+            sellers = sellerRepository.getSellersByNameIn(sellerNames);
+        }
+
+
+        Sort sort =
+                Sort.by(Sort.Order.desc(GpuListing_.MODEL), Sort.Order.desc(GpuListing_.SELLER), Sort.Order.desc(GpuListing_.LAST_CHECKED));
+
+
+        List<GpuListing> gpuListings = gpuListingRepository.findAll(getSpec(gpuModel, sellers, after, before, isActual), sort);
+        return gpuListingsMapper.toGpuListingsDto(gpuListings, currency);
+
+    }
+
+    private Specification<GpuListing> getSpec(GpuModel gpuModel, Set<Seller> sellers, LocalDateTime after, LocalDateTime before, boolean isActual) {
+        Specification<GpuListing> spec = Specification.where(null);
+        if (Objects.nonNull(gpuModel)) spec = spec.and(GpuListingRepository.hasModel(gpuModel));
+        if (!sellers.isEmpty()) spec = spec.and(GpuListingRepository.hasSeller(sellers));
+        if (isActual) spec = spec.and(GpuListingRepository.isAvailable());
+        if (Objects.nonNull(after)) spec = spec.and(GpuListingRepository.isLastUpdateAfter(after));
+        if (Objects.nonNull(before)) spec = spec.and(GpuListingRepository.isLastUpdateBefore(before));
+        return spec;
+    }
 
     public void updateListings(List<GpuListing> listings, Seller seller) {
         listings.forEach(listing -> saveOrUpdate(listing, seller));
     }
 
+    public void outdatedListings(GpuModel gpuModel, Seller seller) {
+        gpuListingRepository.findAllAvailable(seller, gpuModel).forEach(listing -> listing.setAvailable(false));
+    }
+
     public void saveOrUpdate(GpuListing listing, Seller seller) {
-        Optional<GpuListing> presentListing = repository.findTopByListingPageIdAndSellerIdOrderByCreatedAtDesc(listing.getListingPageId(), seller.getId());
+        Optional<GpuListing> presentListing = gpuListingRepository.findTopByListingPageIdAndSellerIdOrderByLastCheckedDesc(listing.getListingPageId(), seller.getId());
         if (presentListing.isPresent()) {
             GpuListing presentGpuListing = presentListing.get();
-            if(presentGpuListing.getPrice().equals(listing.getPrice())) {
+            if (presentGpuListing.getPrice().equals(listing.getPrice())) {
                 presentGpuListing.setName(listing.getName());
                 presentGpuListing.setRelativePath(listing.getRelativePath());
                 presentGpuListing.setLastChecked(listing.getLastChecked());
@@ -34,11 +90,13 @@ public class GpuListingService {
                 presentGpuListing.setLastChecked(listing.getLastChecked());
                 presentGpuListing.setAvailable(false);
                 listing.setAvailable(true);
-                repository.save(listing);
+                gpuListingRepository.save(listing);
             }
         } else {
             listing.setAvailable(true);
-            repository.save(listing);
+            gpuListingRepository.save(listing);
         }
+
+
     }
 }

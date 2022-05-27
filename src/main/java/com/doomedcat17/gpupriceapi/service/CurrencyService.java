@@ -1,7 +1,6 @@
 package com.doomedcat17.gpupriceapi.service;
 
 import com.doomedcat17.gpupriceapi.domain.Currency;
-import com.doomedcat17.gpupriceapi.rates.provider.CurrencyProvider;
 import com.doomedcat17.gpupriceapi.repository.CurrencyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.Optional;
 public class CurrencyService {
 
     private CurrencyRepository currencyRepository;
-    private CurrencyProvider currencyProvider;
 
     public void updateCurrencies(List<Currency> currencies){
         for (Currency currency : currencies) {
@@ -24,6 +22,7 @@ public class CurrencyService {
                     .findByCode(currency.getCode());
             if (presentCurrency.isPresent()) {
                 presentCurrency.get().setRateInUSD(currency.getRateInUSD());
+                presentCurrency.get().setEffectiveDate(currency.getEffectiveDate());
             } else currencyRepository.save(currency);
         }
     }
