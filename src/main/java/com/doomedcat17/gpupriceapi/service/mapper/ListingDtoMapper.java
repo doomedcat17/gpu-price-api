@@ -16,7 +16,7 @@ public interface ListingDtoMapper {
     @Mapping(source = "listing", target = "price")
     ListingDto gpuListingToListingDto(GpuListing listing, @Context String sellerUrl, @Context BigDecimal rate);
 
-    List<ListingDto> gpuListingToListingDto(List<GpuListing> listings, @Context String sellerUrl, @Context BigDecimal rate);
+    List<ListingDto> gpuListingsToListingDtos(List<GpuListing> listings, @Context String sellerUrl, @Context BigDecimal rate);
 
     default BigDecimal mapPrice(GpuListing listing, @Context BigDecimal rate) {
         return listing.getPrice().multiply(listing.getSeller().getCurrency().getRateInUSD()).divide(rate, 2, RoundingMode.HALF_EVEN);

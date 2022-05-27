@@ -36,17 +36,19 @@ public class GpuListingsMapper {
                         .toGpuModelListingsDto(currentListing.getModel(), targetCurrency.getCode(), targetCurrency.getRateInUSD());
                 currentModel.setSellerListings(new ArrayList<>());
             } else if (!currentModel.getModel().equals(currentListing.getModel().getName())) {
-                List<ListingDto> listingDtos = listingDtoMapper.gpuListingToListingDto(collectedListings, currentSeller.getUrl(), targetCurrency.getRateInUSD());
+                List<ListingDto> listingDtos = listingDtoMapper.gpuListingsToListingDtos(collectedListings, currentSeller.getUrl(), targetCurrency.getRateInUSD());
                 SellerListingsDto sellerListingsDto = sellerListingsDtoMapper.gpuListingsToSellerListingsDto(currentSeller, listingDtos, targetCurrency.getRateInUSD());
+                currentSeller = currentListing.getSeller();
                 currentModel.getSellerListings().add(sellerListingsDto);
                 gpuListingsDtos.add(currentModel);
                 currentModel = gpuListingsDtoMapper
                         .toGpuModelListingsDto(currentListing.getModel(), targetCurrency.getCode(), targetCurrency.getRateInUSD());
                 currentModel.setSellerListings(new ArrayList<>());
+                collectedListings = new ArrayList<>();
             }
             if (Objects.isNull(currentSeller)) currentSeller = currentListing.getSeller();
             else if (!currentListing.getSeller().equals(currentSeller)) {
-                List<ListingDto> listingDtos = listingDtoMapper.gpuListingToListingDto(collectedListings, currentSeller.getUrl(), targetCurrency.getRateInUSD());
+                List<ListingDto> listingDtos = listingDtoMapper.gpuListingsToListingDtos(collectedListings, currentSeller.getUrl(), targetCurrency.getRateInUSD());
                 SellerListingsDto sellerListingsDto = sellerListingsDtoMapper.gpuListingsToSellerListingsDto(currentSeller, listingDtos, targetCurrency.getRateInUSD());
                 currentModel.getSellerListings().add(sellerListingsDto);
                 currentSeller = currentListing.getSeller();
@@ -54,7 +56,12 @@ public class GpuListingsMapper {
             }
             collectedListings.add(currentListing);
         }
-        if (Objects.nonNull(currentModel)) gpuListingsDtos.add(currentModel);
+        if (Objects.nonNull(currentModel)) {
+            List<ListingDto> listingDtos = listingDtoMapper.gpuListingsToListingDtos(collectedListings, currentSeller.getUrl(), targetCurrency.getRateInUSD());
+            SellerListingsDto sellerListingsDto = sellerListingsDtoMapper.gpuListingsToSellerListingsDto(currentSeller, listingDtos, targetCurrency.getRateInUSD());
+            currentModel.getSellerListings().add(sellerListingsDto);
+            gpuListingsDtos.add(currentModel);
+        }
         return gpuListingsDtos;
     }
 }

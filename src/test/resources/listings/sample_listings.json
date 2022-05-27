@@ -317,7 +317,7 @@
   {
     "id": null,
     "listingPageId": "B0974YVB9D",
-    "name": "Zotac RTX 3090 AMP Extreme Holo 24GB GDDR6X HDMI 3xDP",
+    "name": "Zotac RTX 3080 AMP Extreme Holo 24GB GDDR6X HDMI 3xDP",
     "model": {
       "id": 2,
       "name": "RTX 3080",
@@ -341,7 +341,7 @@
     ],
     "price": 2379.82,
     "seller": {
-      "id": 31,
+      "id": 30,
       "name": "Amazon PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -362,7 +362,7 @@
   {
     "id": null,
     "listingPageId": "B0966TC82X",
-    "name": "Zotac RTX 3090 Arctic Storm ZT-A30900Q-30P",
+    "name": "Zotac RTX 3070 Arctic Storm ZT-A30900Q-30P",
     "model": {
       "id": 3,
       "name": "RTX 3070",
@@ -476,7 +476,52 @@
     ],
     "price": 2201.68,
     "seller": {
-      "id": 31,
+      "id": 30,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.pl/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/EVGA-3090-Ultra-Gaming-GDDR6X/dp/B08HGS1SXH/ref=sr_1_37?keywords=RTX+3090&qid=1653600988&s=computers&sr=1-37",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HGS1SXH",
+    "name": "EVGA RTX 3070 FTW3 Ultra Gaming 24GB GDDR6X asasdads",
+    "model": {
+      "id": 3,
+      "name": "RTX 3070",
+      "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      50
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      50
+    ],
+    "price": 2201.68,
+    "seller": {
+      "id": 30,
       "name": "Amazon PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.pl/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
