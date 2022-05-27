@@ -1,0 +1,497 @@
+[
+  {
+    "id": null,
+    "listingPageId": "B08HN51T8Q",
+    "name": "ROG-STRIX-RTX3090-GAMING Graphics Card",
+    "model": {
+      "id": 1,
+      "name": "RTX 3090",
+      "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 1499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      22,
+      0
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      22,
+      0
+    ],
+    "price": 1899.51,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/ROG-STRIX-RTX3090-O24G-GAMING-ROG-STRIX-RTX3090-GAMING-Graphics-Card/dp/B08HN51T8Q/ref=sr_1_1?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-1",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08TZD9SH9",
+    "name": "Zotac RTX 3090 Trinity OC 24GB GDDR6X HDMI 3xDP",
+    "model": {
+      "id": 1,
+      "name": "RTX 3090",
+      "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 1499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      59
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      59
+    ],
+    "price": 1899.89,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/Zotac-3090-Trinity-24GB-GDDR6X/dp/B08TZD9SH9/ref=sr_1_2?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-2",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HN5B8FJ",
+    "name": "ASUS TUF-RTX3090-24G GAMING",
+    "model": {
+      "id": 1,
+      "name": "RTX 3090",
+      "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 1499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      58
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      58
+    ],
+    "price": 1969.00,
+    "seller": {
+      "id": 30,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/ASUS-TUF-RTX3090-O24G-GAMING-TUF-RTX3090-24G-GAMING/dp/B08HN5B8FJ/ref=sr_1_7?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-7",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08LTJVGYS",
+    "name": "MSI GeForce RTX 3090 Suprim X 24GB GDDR6X Gaming Graphics Card 3xDP/HDMI",
+    "model": {
+      "id": 1,
+      "name": "RTX 3090",
+      "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 1499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      57
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      57
+    ],
+    "price": 2134.00,
+    "seller": {
+      "id": 30,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/GeForce-Suprim-GDDR6X-Gaming-Graphics/dp/B08LTJVGYS/ref=sr_1_8?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-8",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HR6ZBYJ",
+    "name": "NVIDIA GeForce RTX 3080 Founders Edition Graphics Card",
+    "model": {
+      "id": 2,
+      "name": "RTX 3080",
+      "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 699.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      56
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      56
+    ],
+    "price": 1899.99,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/GeForce-RTX-3090-Founders-Graphics/dp/B08HR6ZBYJ/ref=sr_1_11?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-11",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HM661YM",
+    "name": "MSI RTX 3080 Ventus 3X 24G OC 24GB GDDR6X 384 bit 7680x4320 PCI Express Gen 4 Graphics Card",
+    "model": {
+      "id": 2,
+      "name": "RTX 3080",
+      "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 699.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      55
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      55
+    ],
+    "price": 1899.00,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/Ventus-GDDR6X-7680x4320-Express-Graphics/dp/B08HM661YM/ref=sr_1_12?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-12",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HLYQ9XL",
+    "name": "Gigabyte GeForce RTX 3080 Gaming OC 24GB GDDR6X Graphics Card",
+    "model": {
+      "id": 2,
+      "name": "RTX 3080",
+      "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 699.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      54
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      54
+    ],
+    "price": 1856.58,
+    "seller": {
+      "id": 30,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/Gigabyte-GeForce-Gaming-GDDR6X-Graphics/dp/B08HLYQ9XL/ref=sr_1_17?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-17",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B0974YVB9D",
+    "name": "Zotac RTX 3090 AMP Extreme Holo 24GB GDDR6X HDMI 3xDP",
+    "model": {
+      "id": 2,
+      "name": "RTX 3080",
+      "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 699.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      53
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      53
+    ],
+    "price": 2379.82,
+    "seller": {
+      "id": 31,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/Zotac-3090-Extreme-Holo-GDDR6X/dp/B0974YVB9D/ref=sr_1_23?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-23",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B0966TC82X",
+    "name": "Zotac RTX 3090 Arctic Storm ZT-A30900Q-30P",
+    "model": {
+      "id": 3,
+      "name": "RTX 3070",
+      "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      52
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      52
+    ],
+    "price": 2208.60,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/Zotac-3090-Arctic-Storm-ZT-A30900Q-30P/dp/B0966TC82X/ref=sr_1_25?keywords=RTX+3090&qid=1653600978&s=computers&sr=1-25",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HRBW6VB",
+    "name": "MSI Gaming GeForce RTX 3070 24GB GDRR6X 384-Bit HDMI/DP Nvlink Tri-Frozr 2 Amp Architecture OC Graphics Card (RTX 3090 Gaming X Trio 24G)",
+    "model": {
+      "id": 3,
+      "name": "RTX 3070",
+      "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      51
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      51
+    ],
+    "price": 2036.97,
+    "seller": {
+      "id": 31,
+      "name": "Amazon DE",
+      "url": "https://amazon.de",
+      "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "rateInUSD": 1.0682,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/GeForce-384-Bit-Tri-Frozr-Architecture-Graphics/dp/B08HRBW6VB/ref=sr_1_31?keywords=RTX+3090&qid=1653600988&s=computers&sr=1-31",
+    "available": false
+  },
+  {
+    "id": null,
+    "listingPageId": "B08HGS1SXH",
+    "name": "EVGA RTX 3070 FTW3 Ultra Gaming 24GB GDDR6X HDMI 3xDP",
+    "model": {
+      "id": 3,
+      "name": "RTX 3070",
+      "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
+      "chipsetProducer": "NVIDIA",
+      "msrpInDollars": 499.00
+    },
+    "createdAt": [
+      2022,
+      5,
+      26,
+      21,
+      50
+    ],
+    "lastChecked": [
+      2022,
+      5,
+      26,
+      21,
+      50
+    ],
+    "price": 2201.68,
+    "seller": {
+      "id": 31,
+      "name": "Amazon PL",
+      "url": "https://amazon.pl",
+      "searchUrl": "https://www.amazon.pl/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
+      "currency": {
+        "code": "PLN",
+        "symbol": "zł",
+        "rateInUSD": 0.2315,
+        "effectiveDate": [
+          2022,
+          5,
+          26
+        ]
+      }
+    },
+    "relativePath": "/-/en/EVGA-3090-Ultra-Gaming-GDDR6X/dp/B08HGS1SXH/ref=sr_1_37?keywords=RTX+3090&qid=1653600988&s=computers&sr=1-37",
+    "available": false
+  }
+]

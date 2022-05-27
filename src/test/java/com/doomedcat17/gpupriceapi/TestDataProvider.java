@@ -1,5 +1,7 @@
 package com.doomedcat17.gpupriceapi;
 
+import com.doomedcat17.gpupriceapi.domain.GpuListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
@@ -8,6 +10,7 @@ import org.jsoup.nodes.Document;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class TestDataProvider {
 
@@ -36,5 +39,11 @@ public class TestDataProvider {
             e.printStackTrace();
         }
         return jsonNode;
+    }
+
+    public static List<GpuListing> loadListingsFromFile(String path) throws IOException {
+        objectMapper.findAndRegisterModules();
+        return objectMapper.readValue(new File(path), new TypeReference<>() {
+        });
     }
 }
