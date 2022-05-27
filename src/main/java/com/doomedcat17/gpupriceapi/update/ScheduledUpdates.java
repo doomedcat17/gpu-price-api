@@ -126,13 +126,13 @@ public class ScheduledUpdates {
         List<GpuModel> models = gpuModelRepository.findAll();
         List<Seller> sellers = sellerRepository.findAll();
         ListingProvider provider = new ListingProvider(models);
-        Set<FailedScrap> failedScrapSet = gpuListingsUpdater.update(models, sellers, provider);
+        Set<FailedScrap> failedScrapSet = gpuListingsUpdater.updateListings(models, sellers, provider);
         while (!failedScrapSet.isEmpty()) {
             log.info("Failed scraps: "+failedScrapSet.size());
             log.info("Going to sleep for "+ON_FALIURE_WAIT_TIME_MS+"ms");
             Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
             log.info("Retrying updating failed scraps...");
-            failedScrapSet = gpuListingsUpdater.retryUpdateFailed(failedScrapSet, provider);
+            failedScrapSet = gpuListingsUpdater.retryFailedScraps(failedScrapSet, provider);
         }
         log.info("GpuListing update complete");
     }
