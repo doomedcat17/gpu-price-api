@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 public class ListingDto {
     private String name;
+    private String model;
+    private String seller;
+    private String currencyCode;
     private BigDecimal price;
     private String url;
     private boolean isAvailable;

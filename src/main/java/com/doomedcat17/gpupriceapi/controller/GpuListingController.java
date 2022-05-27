@@ -1,6 +1,6 @@
 package com.doomedcat17.gpupriceapi.controller;
 
-import com.doomedcat17.gpupriceapi.dto.GpuListingsDto;
+import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import com.doomedcat17.gpupriceapi.service.GpuListingService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +19,18 @@ public class GpuListingController {
     private GpuListingService listingService;
 
 
+    //returns all currently available listings
     @GetMapping("/latest")
-    public List<GpuListingsDto> getLatest(@RequestParam(name = "model", required = false, defaultValue = "") String modelName,
-                                          @RequestParam(name = "currency", defaultValue = "USD", required = false) String currencyCode,
-                                          @RequestParam(name = "seller", defaultValue = "", required = false) Set<String> sellerNames) {
+    public List<ListingDto> getLatest(@RequestParam(name = "model", required = false, defaultValue = "") String modelName,
+                                      @RequestParam(name = "currency", defaultValue = "USD", required = false) String currencyCode,
+                                      @RequestParam(name = "seller", defaultValue = "", required = false) Set<String> sellerNames) {
+        return listingService.getListings(modelName, currencyCode, sellerNames, null, null, true);
+    }
+
+    @GetMapping()
+    public List<ListingDto> getByParameters(@RequestParam(name = "model", required = false, defaultValue = "") String modelName,
+                                            @RequestParam(name = "currency", defaultValue = "USD", required = false) String currencyCode,
+                                            @RequestParam(name = "seller", defaultValue = "", required = false) Set<String> sellerNames) {
         return listingService.getListings(modelName, currencyCode, sellerNames, null, null, true);
     }
 

@@ -1,12 +1,12 @@
 package com.doomedcat17.gpupriceapi.service.mapper;
 
+import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.domain.GpuListing;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import org.mapstruct.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ListingDtoMapper {
@@ -14,15 +14,18 @@ public interface ListingDtoMapper {
     @Mapping(source = "listing.lastChecked", target = "effectiveDate")
     @Mapping(source = "listing", target = "url")
     @Mapping(source = "listing", target = "price")
-    ListingDto gpuListingToListingDto(GpuListing listing, @Context String sellerUrl, @Context BigDecimal rate);
+    @Mapping(source = "currencyCode", target = "currencyCode")
+    @Mapping(source = "listing.seller.name", target = "seller")
+    @Mapping(source = "listing.model.name", target = "model")
+    ListingDto gpuListingToListingDto(GpuListing listing, String currencyCode, @Context Currency targetCurrency);
 
-    List<ListingDto> gpuListingsToListingDtos(List<GpuListing> listings, @Context String sellerUrl, @Context BigDecimal rate);
-
-    default BigDecimal mapPrice(GpuListing listing, @Context BigDecimal rate) {
-        return listing.getPrice().multiply(listing.getSeller().getCurrency().getRateInUSD()).divide(rate, 2, RoundingMode.HALF_EVEN);
+    default BigDecimal mapPrice(GpuListing listing, @Context Currency targetCurrency) {
+        Currency listingCurrency = listing.getSeller().getCurrency();
+        if (targetCurrency.equals(listingCurrency)) return listing.getPrice();
+        return listing.getPrice().multiply(listingCurrency.getRateInUSD()).divide(targetCurrency.getRateInUSD(), 2, RoundingMode.HALF_EVEN);
     }
 
-    default String mapUrl(GpuListing gpuListing, @Context String sellerUrl) {
-        return sellerUrl + gpuListing.getRelativePath();
+    default String mapUrl(GpuListing gpuListing) {
+        return gpuListing.getSeller().getUrl() + gpuListing.getRelativePath();
     }
 }

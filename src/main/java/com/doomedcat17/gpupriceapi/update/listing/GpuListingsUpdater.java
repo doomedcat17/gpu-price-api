@@ -12,8 +12,6 @@ import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawler;
 import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawlerFactory;
 import com.doomedcat17.gpupriceapi.service.GpuListingLogService;
 import com.doomedcat17.gpupriceapi.service.GpuListingService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -61,9 +59,6 @@ public class GpuListingsUpdater  {
             SearchListingElementsScraper scraper = SearchListingElementsScraperFactory.getScraper(seller.getName());
             List<GpuListing> listings = listingProvider.getByModel(model, seller, crawler, scraper);
             log.info("Found " + listings.size() + " of " + model.getName() + " on " + seller.getName());
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
-            System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(listings));
             gpuListingService.outdatedListings(model, seller);
             gpuListingService.updateListings(listings, seller);
             GpuListingUpdateLog updateLog = new GpuListingUpdateLog();
@@ -71,7 +66,7 @@ public class GpuListingsUpdater  {
             updateLog.setSeller(seller);
             updateLog.setNumberOfUpdatedListings(listings.size());
             logService.saveLog(updateLog);
-        } catch (CrawlerFailingStatusCodeException | JsonProcessingException e) {
+        } catch (CrawlerFailingStatusCodeException e) {
             log.error("Failed while scraping " + seller.getName() + " for " + model.getName());
             log.error("Exception message: " + e.getMessage());
             return false;
