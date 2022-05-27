@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS seller(
         FOREIGN KEY(currency_code)
                 REFERENCES currency(code)
 );
+
 CREATE TABLE IF NOT EXISTS gpu_listing(
     id INTEGER PRIMARY KEY DEFAULT nextval('main_sequence'),
     listing_page_id VARCHAR NOT NULL,
@@ -37,9 +38,33 @@ CREATE TABLE IF NOT EXISTS gpu_listing(
     relative_path VARCHAR NOT NULL,
     is_available BOOLEAN NOT NULL,
     CONSTRAINT fk_series_id
-        FOREIGN KEY(model_id)
-            REFERENCES gpu_model(id),
+    FOREIGN KEY
+(
+    model_id
+)
+    REFERENCES gpu_model
+(
+    id
+),
     CONSTRAINT fk_seller
-        FOREIGN KEY(seller_id)
-            REFERENCES seller(id)
-);
+    FOREIGN KEY
+(
+    seller_id
+)
+    REFERENCES seller
+(
+    id
+)
+    );
+CREATE TABLE IF NOT EXISTS update_logs
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval
+(
+    'main_sequence'
+),
+    model_id INTEGER NOT NULL,
+    seller_id INTEGER NOT NULL,
+    number_of_updated_listings INTEGER NOT NULL,
+    "time" TIMESTAMP NOT NULL
+    );
+
