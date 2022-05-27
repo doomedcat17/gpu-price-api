@@ -75,6 +75,14 @@
             <artifactId>byte-buddy</artifactId>
             <version>1.12.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${hibernate.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
 
 
     </dependencies>
@@ -110,6 +118,11 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>${hibernate.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
