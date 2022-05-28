@@ -2,12 +2,16 @@ package com.doomedcat17.gpupriceapi.service;
 
 import com.doomedcat17.gpupriceapi.domain.*;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
+import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
 import com.doomedcat17.gpupriceapi.repository.CurrencyRepository;
 import com.doomedcat17.gpupriceapi.repository.GpuListingRepository;
 import com.doomedcat17.gpupriceapi.repository.GpuModelRepository;
 import com.doomedcat17.gpupriceapi.repository.SellerRepository;
 import com.doomedcat17.gpupriceapi.service.mapper.ListingDtoMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -34,10 +38,12 @@ public class GpuListingService {
     private final Sort DEFAULT_SORT = Sort.by(Sort.Order.desc(GpuListing_.MODEL), Sort.Order.asc(GpuListing_.SELLER));
 
 
-    public List<ListingDto> getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, boolean isActual) {
-        Optional<Currency> foundCurrency = currencyRepository.findByCode(currencyCode);
-        if (foundCurrency.isEmpty()) throw new IllegalArgumentException("Invalid currency code");
-        Currency currency = foundCurrency.get();
+    public ListingsPageDto getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, int page, boolean isAvailable) {
+        Optional<Currency> targetCurrency = Optional.empty();
+        if (!currencyCode.isBlank()) {
+            targetCurrency = currencyRepository.findByCode(currencyCode);
+            if (targetCurrency.isEmpty()) throw new IllegalArgumentException("Invalid currency code");
+        }
 
         GpuModel gpuModel = null;
         if (!modelName.isBlank()) {
@@ -53,12 +59,17 @@ public class GpuListingService {
         }
 
         Sort sort = DEFAULT_SORT.and(Sort.by(Sort.Order.asc(GpuListing_.PRICE)));
-
-        List<GpuListing> gpuListings = gpuListingRepository.findAll(getSpec(gpuModel, sellers, after, before, isActual), sort);
-        return gpuListings.stream()
-                .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, currency.getCode(), currency))
+        Pageable pageable = PageRequest.of(page - 1, 50, sort);
+        Page<GpuListing> gpuListings = gpuListingRepository.findAll(getSpec(gpuModel, sellers, after, before, isAvailable), pageable);
+        Currency finalTargetCurrency = targetCurrency.orElse(null);
+        List<ListingDto> listingDtos = gpuListings.stream()
+                .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, finalTargetCurrency))
                 .toList();
+        return new ListingsPageDto(gpuListings.getNumber() + 1, gpuListings.getTotalPages(), listingDtos);
+
+
     }
+
 
     private Specification<GpuListing> getSpec(GpuModel gpuModel, Set<Seller> sellers, LocalDateTime after, LocalDateTime before, boolean isAvailable) {
         Specification<GpuListing> spec = Specification.where(null);
