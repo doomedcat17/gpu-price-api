@@ -1,180 +1,180 @@
 [
   {
-    "name": "RTX 3090",
+    "name": "RTX_3090",
     "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 1499.00
   },
   {
-    "name": "RTX 3090 Ti",
+    "name": "RTX_3090_Ti",
     "regex": ".*rtx.?3090.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 1999.00
   },
   {
-    "name": "RTX 3080",
+    "name": "RTX_3080",
     "regex": ".*rtx.?3080(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 699.00
   },
   {
-    "name": "RTX 3080 Ti",
+    "name": "RTX_3080_Ti",
     "regex": ".*rtx.?3080.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 1199.00
   },
   {
-    "name": "RTX 3070",
+    "name": "RTX_3070",
     "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 499.00
   },
   {
-    "name": "RTX 3070 Ti",
+    "name": "RTX_3070_Ti",
     "regex": ".*rtx.?3070.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 599.00
   },
   {
-    "name": "RTX 3060",
+    "name": "RTX_3060",
     "regex": ".*rtx.?3060(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 329.00
   },
   {
-    "name": "RTX 3060 Ti",
+    "name": "RTX_3060_Ti",
     "regex": ".*rtx.?3060.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 399.00
   },
   {
-    "name": "RTX 3050",
+    "name": "RTX_3050",
     "regex": ".*rtx.?3050(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 249.00
   },
   {
-    "name": "RTX 2080",
+    "name": "RTX_2080",
     "regex": ".*rtx.?2080(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 699.00
   },
   {
-    "name": "RTX 2080 Ti",
+    "name": "RTX_2080_Ti",
     "regex": ".*rtx.?2080.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 999.00
   },
   {
-    "name": "RTX 2080 SUPER",
+    "name": "RTX_2080_SUPER",
     "regex": ".*rtx.?2080.?SUPER.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 699.00
   },
   {
-    "name": "RTX 2070",
+    "name": "RTX_2070",
     "regex": ".*rtx.?2070(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 499.00
   },
   {
-    "name": "RTX 2070 SUPER",
+    "name": "RTX_2070_SUPER",
     "regex": ".*rtx.?2070.?SUPER.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 499.00
   },
   {
-    "name": "GTX 1660",
+    "name": "GTX_1660",
     "regex": ".*gtx.?1660(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 219.00
   },
   {
-    "name": "GTX 1660 SUPER",
+    "name": "GTX_1660_SUPER",
     "regex": ".*gtx.?1660.?SUPER.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 229.00
   },
   {
-    "name": "GTX 1660 Ti",
+    "name": "GTX_1660_Ti",
     "regex": ".*gtx.?1660.?ti.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 279.00
   },
   {
-    "name": "GTX 1650",
+    "name": "GTX_1650",
     "regex": ".*gtx.?1650(?:(?!.?ti.?)(?:(?!.*super).*)).*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 149.00
   },
   {
-    "name": "GTX 1650 SUPER",
+    "name": "GTX_1650_SUPER",
     "regex": ".*gtx.?1650.?SUPER.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 159.00
   },
   {
-    "name": "RX 6950 XT",
+    "name": "RX_6950_XT",
     "regex": ".*rx.?6950.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 1099.00
   },
   {
-    "name": "RX 6900 XT",
+    "name": "RX_6900_XT",
     "regex": ".*rx.?6900.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 999.00
   },
   {
-    "name": "RX 6800 XT",
+    "name": "RX_6800_XT",
     "regex": ".*rx.?6800.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 649.00
   },
   {
-    "name": "RX 6800",
+    "name": "RX_6800",
     "regex": ".*rx.?6800(?:(?!.?xt.?)).*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 579.00
   },
   {
-    "name": "RX 6750 XT",
+    "name": "RX_6750_XT",
     "regex": ".*rx.?6750.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 549.00
   },
   {
-    "name": "RX 6700 XT",
+    "name": "RX_6700_XT",
     "regex": ".*rx.?6700.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 479.00
   },
   {
-    "name": "RX 6600",
+    "name": "RX_6600",
     "regex": ".*rx.?6600(?:(?!.?xt.?)).*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 329.00
   },
   {
-    "name": "RX 6600 XT",
+    "name": "RX_6600_XT",
     "regex": ".*rx.?6600.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 379.00
   },
   {
-    "name": "RX 6650 XT",
+    "name": "RX_6650_XT",
     "regex": ".*rx.?6650.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 399.00
   },
   {
-    "name": "RX 6500 XT",
+    "name": "RX_6500_XT",
     "regex": ".*rx.?6500.?xt.*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 199.00
   },
   {
-    "name": "RX 6400",
+    "name": "RX_6400",
     "regex": ".*rx.?6400(?:(?!.?xt.?)).*",
     "chipsetProducer": "AMD",
     "msrpInDollars": 159.00
