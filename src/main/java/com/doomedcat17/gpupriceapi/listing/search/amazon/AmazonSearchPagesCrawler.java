@@ -41,7 +41,7 @@ public class AmazonSearchPagesCrawler implements SellerSearchPagesCrawler {
 
     public Optional<HtmlPage> getFirst(GpuModel model, String searchUrl) {
         String url = searchUrl + SEARCH_PHRASE_PARAMETER +
-                URLEncoder.encode(model.getName(), StandardCharsets.UTF_8);
+                URLEncoder.encode(model.getName().replace('_', ' '), StandardCharsets.UTF_8);
         return getPage(url);
     }
 
