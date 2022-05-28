@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/v1/api/gpulistings")
+@RequestMapping("/v1/api/gpu/listings")
 @AllArgsConstructor
 public class GpuListingController {
 
@@ -28,7 +28,7 @@ public class GpuListingController {
         return listingService.getListings(modelName, currencyCode, sellerNames, null, null, page, true);
     }
 
-    @GetMapping()
+    @GetMapping
     public ListingsPageDto getByParameters(@RequestParam(name = "model", required = false, defaultValue = "") String modelName,
                                            @RequestParam(name = "currency", defaultValue = "", required = false) String currencyCode,
                                            @RequestParam(name = "seller", defaultValue = "", required = false) Set<String> sellerNames,
