@@ -7,6 +7,7 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -48,7 +49,13 @@ public interface GpuListingRepository extends JpaRepository<GpuListing, Integer>
 
     Optional<GpuListing> findTopByListingPageIdAndSellerIdOrderByLastCheckedDesc(String listingPageId, Integer sellerId);
 
-    @Query("SELECT listing FROM GpuListing listing WHERE listing.seller = :seller AND listing.model = :model AND listing.isAvailable = true")
-    List<GpuListing> findAllAvailable(Seller seller, GpuModel model);
+
+    @Query("SELECT listing FROM GpuListing listing WHERE listing.model = :model AND listing.isAvailable = true AND listing.seller = :seller AND listing.price = (SELECT MIN(innerListing.price) FROM GpuListing innerListing WHERE innerListing.model = :model AND innerListing.seller = :seller AND innerListing.isAvailable = true)")
+    List<GpuListing> findCheapestForSellerAndModel(Seller seller, GpuModel model);
+
+    @Modifying
+    @Query("UPDATE GpuListing SET isAvailable = false WHERE model = :model AND seller = :seller")
+    void outdateListings(GpuModel model, Seller seller);
+
 
 }
