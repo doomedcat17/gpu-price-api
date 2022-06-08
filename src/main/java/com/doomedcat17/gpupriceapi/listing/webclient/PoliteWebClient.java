@@ -24,7 +24,8 @@ public class PoliteWebClient extends WebClient {
         super.getOptions().setAppletEnabled(false);
         super.getOptions().setDownloadImages(false);
         super.getOptions().setFetchPolyfillEnabled(true);
-        super.getOptions().setProxyPolyfillEnabled(true);
+        super.getOptions().setHistoryPageCacheLimit(0);
+        super.getOptions().setHistorySizeLimit(0);
 
     }
 
@@ -33,7 +34,9 @@ public class PoliteWebClient extends WebClient {
     @SneakyThrows
     public <P extends Page> P getPage(String url) throws FailingHttpStatusCodeException {
         log.debug("Getting " + url);
+        P page = super.getPage(url);
         this.waitForBackgroundJavaScript(3000);
-        return super.getPage(url);
+        this.close();
+        return page;
     }
 }
