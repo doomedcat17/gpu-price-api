@@ -4,6 +4,7 @@ import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.domain.GpuListing;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
@@ -13,10 +14,13 @@ import java.util.Objects;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ListingDtoMapper {
 
+    static ListingDtoMapper INSTANCE = Mappers.getMapper(ListingDtoMapper.class);
+
     @Mapping(source = "listing.lastChecked", target = "effectiveDate")
     @Mapping(source = "listing", target = "url")
     @Mapping(source = "listing", target = "price", qualifiedByName = "price")
     @Mapping(source = "listing", target = "currencyCode", qualifiedByName = "code")
+    @Mapping(source = "listing", target = "currencySymbol", qualifiedByName = "symbol")
     @Mapping(source = "listing.seller.name", target = "seller")
     @Mapping(source = "listing.model.name", target = "model")
     @Mapping(source = "listing.model.chipsetProducer", target = "chipsetProducer")
@@ -33,6 +37,12 @@ public interface ListingDtoMapper {
     default String mapCurrencyCode(GpuListing listing, @Context Currency targetCurrency) {
         if (Objects.nonNull(targetCurrency)) return targetCurrency.getCode();
         else return listing.getSeller().getCurrency().getCode();
+    }
+
+    @Named("symbol")
+    default String mapSymbol(GpuListing listing, @Context Currency targetCurrency) {
+        if (Objects.nonNull(targetCurrency)) return targetCurrency.getSymbol();
+        else return listing.getSeller().getCurrency().getSymbol();
     }
 
     default String mapUrl(GpuListing gpuListing) {

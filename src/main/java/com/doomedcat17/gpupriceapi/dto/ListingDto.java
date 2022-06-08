@@ -16,6 +16,7 @@ public class ListingDto {
     private ChipsetProducer chipsetProducer;
     private String seller;
     private String currencyCode;
+    private String currencySymbol;
     private BigDecimal price;
     private String url;
     private boolean isAvailable;

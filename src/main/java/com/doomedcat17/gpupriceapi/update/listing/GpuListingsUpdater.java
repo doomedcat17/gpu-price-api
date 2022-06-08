@@ -60,7 +60,8 @@ public class GpuListingsUpdater  {
             List<GpuListing> listings = listingProvider.getByModel(model, seller, crawler, scraper);
             log.info("Found " + listings.size() + " of " + model.getName() + " on " + seller.getName());
             gpuListingService.outdatedListings(model, seller);
-            gpuListingService.updateListings(listings, seller);
+            listings.forEach(gpuListing -> gpuListingService.saveOrUpdate(gpuListing, seller));
+            gpuListingService.evictAllCacheValues();
             GpuListingUpdateLog updateLog = new GpuListingUpdateLog();
             updateLog.setModel(model);
             updateLog.setSeller(seller);
