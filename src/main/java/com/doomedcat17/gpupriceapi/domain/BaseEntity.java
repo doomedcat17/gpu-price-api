@@ -1,6 +1,7 @@
 package com.doomedcat17.gpupriceapi.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Getter
+@Setter
 public class BaseEntity {
     @Id
     @GeneratedValue(generator = "sequence-generator")

@@ -42,4 +42,5 @@ public class GpuListing extends BaseEntity implements Serializable {
     private String relativePath;
     @Column(name = "is_available")
     private boolean isAvailable;
+
 }
