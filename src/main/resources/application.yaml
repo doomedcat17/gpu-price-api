@@ -3,9 +3,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${dbUser}
-    password: ${dbPassword}
-    url: jdbc:postgresql://${dbHost}:${dbPort}/${dbName}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
 logging:
   level:
     com.gargoylesoftware: OFF
+doomedcat17:
+  gpu-price-api:
+    initOnStart: true
+    on-failure-wait-time-ms: 30000

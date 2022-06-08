@@ -67,7 +67,7 @@
   },
   {
     "name": "RTX_2080_SUPER",
-    "regex": ".*rtx.?2080.?SUPER.*",
+    "regex": ".*rtx.?2080.?super.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 699.00
   },
@@ -79,7 +79,7 @@
   },
   {
     "name": "RTX_2070_SUPER",
-    "regex": ".*rtx.?2070.?SUPER.*",
+    "regex": ".*rtx.?2070.?super.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 499.00
   },
@@ -91,7 +91,7 @@
   },
   {
     "name": "GTX_1660_SUPER",
-    "regex": ".*gtx.?1660.?SUPER.*",
+    "regex": ".*gtx.?1660.?super.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 229.00
   },
@@ -109,7 +109,7 @@
   },
   {
     "name": "GTX_1650_SUPER",
-    "regex": ".*gtx.?1650.?SUPER.*",
+    "regex": ".*gtx.?1650.?super.*",
     "chipsetProducer": "NVIDIA",
     "msrpInDollars": 159.00
   },

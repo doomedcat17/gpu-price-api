@@ -15,16 +15,15 @@ import com.doomedcat17.gpupriceapi.service.GpuModelService;
 import com.doomedcat17.gpupriceapi.service.SellerService;
 import com.doomedcat17.gpupriceapi.update.listing.FailedScrap;
 import com.doomedcat17.gpupriceapi.update.listing.GpuListingsUpdater;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,26 +40,36 @@ public class ScheduledUpdates {
     private final SellerService sellerService;
     private final SellerRepository sellerRepository;
     private final GpuModelRepository gpuModelRepository;
+
     private volatile boolean isInitialized = false;
+    //5 min
+    @Value("${doomedcat17.gpu-price-api.initOnStart}")
+    private volatile boolean initOnStart = false;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
     private long ON_FALIURE_WAIT_TIME_MS = 5 * 60000L;
 
     @Scheduled(fixedRateString = "PT24H")
-    private void update() throws InterruptedException {
-        synchronized (this) {
-            if (!isInitialized) {
-                log.info("Starting initialization");
-                loadCurrencies();
-                log.info("Loading Gpu Models...");
-                List<GpuModel> gpuModels = ResourceLoader.loadGpuModelsFromFile();
-                gpuModelService.saveAll(gpuModels);
-                log.info("Gpu Models loaded!");
-                loadSellers();
-                isInitialized = true;
-                notifyAll();
+    private void update() {
+        try {
+            synchronized (this) {
+                if (!isInitialized && initOnStart) {
+                    log.info("Starting initialization");
+                    loadCurrencies();
+                    log.info("Loading Gpu Models...");
+                    List<GpuModel> gpuModels = ResourceLoader.loadGpuModelsFromFile();
+                    gpuModelService.saveAll(gpuModels);
+                    log.info("Gpu Models loaded!");
+                    loadSellers();
+                    isInitialized = true;
+                    notifyAll();
+                }
             }
+            updateListings();
+            log.info("Update complete");
+        } catch (InterruptedException e) {
+            log.error("Update Interrupted");
+            Thread.currentThread().interrupt();
         }
-        updateListings();
-        log.info("Update complete");
 
     }
 
@@ -83,23 +92,13 @@ public class ScheduledUpdates {
 
     }
 
-
     private void loadCurrencies() throws InterruptedException {
         try {
             log.info("Updating currencies...");
             List<Currency> currencies = currencyProvider.getLatestRates();
-            ArrayNode arrayNode = ResourceLoader.loadCurrencySymbols();
-            currencies.forEach(currency -> {
-                Iterator<JsonNode> iterator = arrayNode.iterator();
-                while (iterator.hasNext()) {
-                    JsonNode jsonNode = iterator.next();
-                    if (jsonNode.get("code").asText().equals(currency.getCode())) {
-                        currency.setSymbol(jsonNode.get("symbol").asText());
-                        iterator.remove();
-                        break;
-                    }
-                }
-            });
+            Map<String, String> currencySymbolsMap = ResourceLoader.loadCurrencySymbols();
+            currencies.forEach(currency ->
+                    currency.setSymbol(currencySymbolsMap.get(currency.getCode())));
             currencyService.updateCurrencies(currencies);
             log.info("Currencies updated!");
         } catch (IOException e) {
@@ -136,5 +135,4 @@ public class ScheduledUpdates {
         }
         log.info("GpuListing update complete");
     }
-
 }
