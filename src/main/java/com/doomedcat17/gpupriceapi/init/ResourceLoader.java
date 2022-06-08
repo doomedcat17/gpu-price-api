@@ -5,11 +5,12 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.exception.init.ResourceLoadingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ResourceLoader {
@@ -40,11 +41,11 @@ public class ResourceLoader {
         }
     }
 
-    public static ArrayNode loadCurrencySymbols() {
+    public static Map<String, String> loadCurrencySymbols() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         try {
-            return (ArrayNode) objectMapper.readTree(loadFile("init/currency_symbols.json"));
+            return objectMapper.readValue(loadFile("init/currency_symbols.json"), HashMap.class);
         } catch (IOException e) {
             throw new ResourceLoadingException(e.getMessage());
         }
