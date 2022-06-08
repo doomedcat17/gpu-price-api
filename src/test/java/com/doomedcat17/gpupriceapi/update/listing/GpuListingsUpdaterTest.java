@@ -45,6 +45,7 @@ class GpuListingsUpdaterTest {
         model.setName("RTX 3080");
         seller = new Seller();
         seller.setName("Amazon");
+        seller.setId(1);
         gpuListing = new GpuListing();
         gpuListing.setModel(model);
         gpuListing.setSeller(seller);
@@ -61,7 +62,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService).outdatedListings(model, seller);
-        verify(gpuListingService).updateListings(listings, seller);
+        verify(gpuListingService).saveOrUpdate(gpuListing, seller);
         verify(logService).saveLog(any());
         assertTrue(failedScraps.isEmpty());
 
@@ -77,7 +78,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService, never()).outdatedListings(any(), any());
-        verify(gpuListingService, never()).updateListings(anyList(), any());
+        verify(gpuListingService, never()).saveOrUpdate(any(), any());
         verify(logService, never()).saveLog(any());
         assertFalse(failedScraps.isEmpty());
 
@@ -88,8 +89,10 @@ class GpuListingsUpdaterTest {
         //given
         Seller amazonPlSeller = Seller.builder()
                 .name("Amazon PL").build();
+        amazonPlSeller.setId(2);
         Seller amazonUKSeller = Seller.builder()
                 .name("Amazon UK").build();
+        amazonUKSeller.setId(3);
         when(provider.getByModel(same(model), any(), any(), any())).thenThrow(new CrawlerFailingStatusCodeException("test message"));
 
         //when
@@ -97,7 +100,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService, never()).outdatedListings(any(), any());
-        verify(gpuListingService, never()).updateListings(anyList(), any());
+        verify(gpuListingService, never()).saveOrUpdate(any(), any());
         verify(logService, never()).saveLog(any());
         assertEquals(1, failedScraps.size());
         assertEquals(3, failedScraps.stream().findAny().get().getSellers().size());

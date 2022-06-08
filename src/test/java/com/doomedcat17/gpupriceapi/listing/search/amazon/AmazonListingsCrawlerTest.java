@@ -7,6 +7,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -28,6 +29,7 @@ class AmazonListingsCrawlerTest {
         gpuModel.setName("RTX 3060");
     }
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {
             "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss",
