@@ -12,8 +12,11 @@ import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawler;
 import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawlerFactory;
 import com.doomedcat17.gpupriceapi.service.GpuListingLogService;
 import com.doomedcat17.gpupriceapi.service.GpuListingService;
+import com.doomedcat17.gpupriceapi.service.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -22,10 +25,37 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GpuListingsUpdater  {
+public class GpuListingsUpdater {
 
     private final GpuListingService gpuListingService;
     private final GpuListingLogService logService;
+
+    private final GpuModelService modelService;
+    private final SellerService sellerService;
+
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
+    private long ON_FALIURE_WAIT_TIME_MS = 5 * 60000L;
+
+    public void update() {
+        try {
+            log.info("Staring GpuListing update...");
+            List<GpuModel> models = modelService.getAllModels();
+            List<Seller> sellers = sellerService.getAll();
+            ListingProvider provider = new ListingProvider(models);
+            Set<FailedScrap> failedScrapSet = updateListings(models, sellers, provider);
+            while (!failedScrapSet.isEmpty()) {
+                log.info("Failed scraps: " + failedScrapSet.size());
+                log.info("Going to sleep for " + ON_FALIURE_WAIT_TIME_MS + "ms");
+                Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
+                log.info("Retrying updating failed scraps...");
+                failedScrapSet = retryFailedScraps(failedScrapSet, provider);
+            }
+            log.info("GpuListing update complete");
+        } catch (InterruptedException e) {
+            log.info("GpuListings update interrupted");
+            Thread.currentThread().interrupt();
+        }
+    }
 
     public Set<FailedScrap> updateListings(List<GpuModel> models, List<Seller> sellers, ListingProvider provider) {
         Set<FailedScrap> failedScraps = new HashSet<>();
