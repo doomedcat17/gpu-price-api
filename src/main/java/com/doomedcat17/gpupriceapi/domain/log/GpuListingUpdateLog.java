@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @Table(name = "update_logs")
 public class GpuListingUpdateLog extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "model_id", nullable = false)
+    @JoinColumn(name = "model", nullable = false)
     private GpuModel model;
     @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
+    @JoinColumn(name = "seller", nullable = false)
     private Seller seller;
     @CreationTimestamp
     private LocalDateTime time;

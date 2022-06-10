@@ -2,10 +2,7 @@ package com.doomedcat17.gpupriceapi.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,10 +14,11 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GpuModel extends BaseEntity implements Serializable {
+public class GpuModel implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -2071467649181916615L;
+    @Id
     @Column(unique = true, nullable = false)
     private String name;
     @Column(nullable = false)

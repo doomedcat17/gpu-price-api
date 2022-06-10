@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,10 +13,11 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Seller extends BaseEntity implements Serializable {
+public class Seller implements Serializable {
 
     private static final long serialVersionUID = 8740759782744845185L;
-    @Column(unique = true, nullable = false)
+
+    @Id
     private String name;
     @Column(unique = true, nullable = false)
     private String url;
@@ -28,5 +30,16 @@ public class Seller extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "seller")
     private Set<GpuListing> listings;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seller seller = (Seller) o;
+        return name.equals(seller.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
