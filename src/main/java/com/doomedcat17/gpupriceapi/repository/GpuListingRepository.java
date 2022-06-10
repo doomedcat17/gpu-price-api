@@ -47,14 +47,14 @@ public interface GpuListingRepository extends JpaRepository<GpuListing, Integer>
         return (gpuListingRoot, cq, cb) -> cb.equal(gpuListingRoot.get(GpuListing_.LISTING_PAGE_ID), listingPageId);
     }
 
-    Optional<GpuListing> findTopByListingPageIdAndSellerIdOrderByLastCheckedDesc(String listingPageId, Integer sellerId);
+    Optional<GpuListing> findTopByListingPageIdAndSellerOrderByLastCheckedDesc(String listingPageId, Seller seller);
 
 
     @Query("SELECT listing FROM GpuListing listing WHERE listing.model = :model AND listing.isAvailable = true AND listing.seller = :seller AND listing.price = (SELECT MIN(innerListing.price) FROM GpuListing innerListing WHERE innerListing.model = :model AND innerListing.seller = :seller AND innerListing.isAvailable = true)")
     List<GpuListing> findCheapestForSellerAndModel(Seller seller, GpuModel model);
 
     @Modifying
-    @Query("UPDATE GpuListing SET isAvailable = false WHERE model = :model AND seller = :seller")
+    @Query("UPDATE GpuListing listing SET listing.isAvailable = false WHERE listing.model = :model AND listing.seller = :seller")
     void outdateListings(GpuModel model, Seller seller);
 
 

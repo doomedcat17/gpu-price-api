@@ -80,7 +80,7 @@ public class GpuListingService {
     }
 
     public void saveOrUpdate(GpuListing listing, Seller seller) {
-        Optional<GpuListing> presentListing = gpuListingRepository.findTopByListingPageIdAndSellerIdOrderByLastCheckedDesc(listing.getListingPageId(), seller.getId());
+        Optional<GpuListing> presentListing = gpuListingRepository.findTopByListingPageIdAndSellerOrderByLastCheckedDesc(listing.getListingPageId(), seller);
         if (presentListing.isPresent()) {
             GpuListing presentGpuListing = presentListing.get();
             if (presentGpuListing.getPrice().equals(listing.getPrice())) {
