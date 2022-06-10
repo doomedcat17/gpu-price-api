@@ -6,7 +6,5 @@ import org.jsoup.nodes.Document;
 import java.util.List;
 
 public interface SellerSearchPagesCrawler {
-
-
     List<Document> getSearchPages(GpuModel model, String searchUrl);
 }
