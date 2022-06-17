@@ -18,8 +18,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Currency implements Serializable {
     @Id
-    @Column(unique = true, nullable = false)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
+    @Column(name = "symbol", nullable = false)
     private String symbol;
     @Column(name = "rate_in_USD")
     private BigDecimal rateInUSD;

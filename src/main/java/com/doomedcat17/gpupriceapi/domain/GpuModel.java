@@ -19,9 +19,9 @@ public class GpuModel implements Serializable {
     @Serial
     private static final long serialVersionUID = -2071467649181916615L;
     @Id
-    @Column(unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(name = "regex", nullable = false)
     private String regex;
     @Column(name = "chipset_producer", nullable = false)
     @Enumerated(EnumType.STRING)

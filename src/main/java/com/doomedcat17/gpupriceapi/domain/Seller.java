@@ -18,15 +18,15 @@ public class Seller implements Serializable {
     private static final long serialVersionUID = 8740759782744845185L;
 
     @Id
+    @Column(name = "name")
     private String name;
-    @Column(unique = true, nullable = false)
+    @Column(name = "url", unique = true, nullable = false)
     private String url;
-    @Column(nullable = false)
+    @Column(name = "search_url", nullable = false)
     private String searchUrl;
     @ManyToOne
     @JoinColumn(name = "currency_code")
     private Currency currency;
-
     @OneToMany(mappedBy = "seller")
     private Set<GpuListing> listings;
 

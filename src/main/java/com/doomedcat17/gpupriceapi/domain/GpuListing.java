@@ -22,8 +22,9 @@ public class GpuListing extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -44696594148361695L;
 
-    @Column(name = "listing_page_id")
+    @Column(name = "listing_page_id", nullable = false)
     private String listingPageId;
+    @Column(name = "name", nullable = false)
     private String name;
     @ManyToOne
     @JoinColumn(name = "model", nullable = false)
@@ -34,6 +35,7 @@ public class GpuListing extends BaseEntity implements Serializable {
     @UpdateTimestamp
     @Column(name = "last_checked")
     private LocalDateTime lastChecked;
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
     @ManyToOne
     @JoinColumn(name = "seller")
