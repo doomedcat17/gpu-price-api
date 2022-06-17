@@ -26,9 +26,8 @@ public class GpuListingController {
     public ListingsPageDto getLatest(@RequestParam(name = "model", required = false, defaultValue = "") String modelName,
                                      @RequestParam(name = "currency", defaultValue = "", required = false) String currencyCode,
                                      @RequestParam(name = "seller", defaultValue = "", required = false) Set<String> sellerNames,
-                                     @RequestParam(name = "sortByPrice", defaultValue = "false", required = false) boolean sortByPrice,
                                      @RequestParam(name = "page", defaultValue = "1", required = false) int page) {
-        return listingService.getLatest(modelName, currencyCode, sellerNames, sortByPrice, page);
+        return listingService.getLatest(modelName, currencyCode, sellerNames, page);
     }
 
     @GetMapping("/cheapest")

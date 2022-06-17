@@ -37,7 +37,7 @@ public class PageController {
     public String model(@PathVariable(name = "modelName") String modelName,
                         @RequestParam(name = "page", defaultValue = "1") int pageNum,
                         Model model) {
-        model.addAttribute("pageDto", service.getLatest(modelName, "USD", Set.of(), true, pageNum));
+        model.addAttribute("pageDto", service.getLatest(modelName, "USD", Set.of(), pageNum));
         model.addAttribute("models", modelDtoService.getGpuModels(null, "USD")
                 .stream()
                 .collect(Collectors.toMap(GpuModelDto::getName, Function.identity()))

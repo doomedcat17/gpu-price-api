@@ -1,10 +1,8 @@
 [
   {
-    "id": null,
     "listingPageId": "B08HN51T8Q",
     "name": "ROG-STRIX-RTX3090-GAMING Graphics Card",
     "model": {
-      "id": 1,
       "name": "RTX_3090",
       "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -26,7 +24,6 @@
     ],
     "price": 1899.51,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -45,11 +42,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08TZD9SH9",
     "name": "Zotac RTX_3090 Trinity OC 24GB GDDR6X_HDMI 3xDP",
     "model": {
-      "id": 1,
       "name": "RTX_3090",
       "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -71,7 +66,6 @@
     ],
     "price": 1899.89,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -90,11 +84,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HN5B8FJ",
     "name": "ASUS TUF-RTX3090-24G GAMING",
     "model": {
-      "id": 1,
       "name": "RTX_3090",
       "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -116,7 +108,6 @@
     ],
     "price": 1969.00,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -135,11 +126,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08LTJVGYS",
     "name": "MSI GeForce RTX_3090 Suprim X_24GB GDDR6X_Gaming Graphics Card 3xDP/HDMI",
     "model": {
-      "id": 1,
       "name": "RTX_3090",
       "regex": ".*rtx.?3090(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -161,7 +150,6 @@
     ],
     "price": 2134.00,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -180,11 +168,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HR6ZBYJ",
     "name": "NVIDIA GeForce RTX_3080 Founders Edition_Graphics Card",
     "model": {
-      "id": 2,
       "name": "RTX_3080",
       "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -206,7 +192,6 @@
     ],
     "price": 1899.99,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -225,11 +210,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HM661YM",
     "name": "MSI RTX_3080 Ventus 3X_24G OC 24GB GDDR6X_384 bit 7680x4320 PCI Express Gen_4 Graphics Card",
     "model": {
-      "id": 2,
       "name": "RTX_3080",
       "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -251,7 +234,6 @@
     ],
     "price": 1899.00,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -270,11 +252,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HLYQ9XL",
     "name": "Gigabyte GeForce RTX_3080 Gaming OC 24GB GDDR6X_Graphics Card",
     "model": {
-      "id": 2,
       "name": "RTX_3080",
       "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -296,7 +276,6 @@
     ],
     "price": 1856.58,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -315,11 +294,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B0974YVB9D",
     "name": "Zotac RTX_3080 AMP Extreme Holo 24GB GDDR6X_HDMI 3xDP",
     "model": {
-      "id": 2,
       "name": "RTX_3080",
       "regex": ".*rtx.?3080(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -341,7 +318,6 @@
     ],
     "price": 2379.82,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -360,11 +336,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B0966TC82X",
     "name": "Zotac RTX_3070 Arctic Storm ZT-A30900Q-30P",
     "model": {
-      "id": 3,
       "name": "RTX_3070",
       "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -386,7 +360,6 @@
     ],
     "price": 2208.60,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -405,11 +378,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HRBW6VB",
     "name": "MSI Gaming GeForce RTX_3070 24GB GDRR6X_384-Bit HDMI/DP Nvlink Tri-Frozr 2 Amp Architecture OC Graphics Card (RTX_3090 Gaming X_Trio 24G)",
     "model": {
-      "id": 3,
       "name": "RTX_3070",
       "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -431,7 +402,6 @@
     ],
     "price": 2036.97,
     "seller": {
-      "id": 31,
       "name": "Amazon_DE",
       "url": "https://amazon.de",
       "searchUrl": "https://www.amazon.de/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -450,11 +420,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HGS1SXH",
     "name": "EVGA RTX_3070 FTW3 Ultra Gaming 24GB GDDR6X_HDMI 3xDP",
     "model": {
-      "id": 3,
       "name": "RTX_3070",
       "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -476,7 +444,6 @@
     ],
     "price": 2201.68,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.pl/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",
@@ -495,11 +462,9 @@
     "available": true
   },
   {
-    "id": null,
     "listingPageId": "B08HGS1SXH",
     "name": "EVGA RTX_3070 FTW3 Ultra Gaming 24GB GDDR6X_asasdads",
     "model": {
-      "id": 3,
       "name": "RTX_3070",
       "regex": ".*rtx.?3070(?:(?!.?ti.?)).*",
       "chipsetProducer": "NVIDIA",
@@ -521,7 +486,6 @@
     ],
     "price": 2201.68,
     "seller": {
-      "id": 30,
       "name": "Amazon_PL",
       "url": "https://amazon.pl",
       "searchUrl": "https://www.amazon.pl/s?rh=n%3A430161031&ref=nb_sb_noss&language=en_GB",

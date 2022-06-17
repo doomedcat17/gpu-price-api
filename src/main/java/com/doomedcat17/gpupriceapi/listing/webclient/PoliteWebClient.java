@@ -10,7 +10,7 @@ public class PoliteWebClient extends WebClient {
 
 
     public PoliteWebClient() {
-        super(BrowserVersion.CHROME);
+        super(BrowserVersion.CHROME, "34.145.226.144", 8080);
         super.setFrameContentHandler(baseFrameElement -> false);
         super.getCache().setMaxSize(0);
         super.getCache().clear();

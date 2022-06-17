@@ -30,11 +30,11 @@ public class ListingsDtoService {
     private final ListingDtoMapper listingDtoMapper;
     private final Integer PAGE_SIZE = 50;
 
-    public ListingsPageDto getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, int page, boolean isAvailable) {
+    public ListingsPageDto getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, int page, boolean availableOnly) {
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
         Optional<GpuModel> presentGpuModel = getModel(modelName);
         Set<Seller> sellers = getSellers(sellerNames);
-        Page<GpuListing> gpuListings = gpuListingService.getListings(presentGpuModel, sellers, after, before, page, isAvailable);
+        Page<GpuListing> gpuListings = gpuListingService.getListings(presentGpuModel, sellers, after, before, page, availableOnly);
         List<ListingDto> listingDtos = gpuListings.stream()
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, targetCurrency.orElse(null)))
                 .toList();
@@ -42,23 +42,24 @@ public class ListingsDtoService {
 
     }
 
-    public ListingsPageDto getLatest(String modelName, String currencyCode, Set<String> sellerNames, boolean sortByPrice, int pageNum) {
+    public ListingsPageDto getLatest(String modelName, String currencyCode, Set<String> sellerNames, int pageNum) {
+        if (pageNum == 0)
+            throw Problem.valueOf(Status.BAD_REQUEST, "Invalid page number");
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
         List<GpuListing> gpuListings = gpuListingService.getAllAvailable();
         int totalPages = gpuListings.size() / PAGE_SIZE;
+        if (totalPages % PAGE_SIZE > 0) totalPages++;
         if (!modelName.isBlank()) {
             gpuListings = gpuListings.stream().filter(gpuListing -> gpuListing.getModel().getName().equals(modelName)).toList();
         }
         if (!sellerNames.isEmpty()) {
             gpuListings = gpuListings.stream().filter(gpuListing -> sellerNames.contains(gpuListing.getSeller().getName())).toList();
         }
-        gpuListings = gpuListings.stream().skip(pageNum == 1 ? 0 : (long) pageNum * PAGE_SIZE).limit(PAGE_SIZE).toList();
+
+        gpuListings = gpuListings.stream().skip(pageNum == 1 ? 0 : (long) (pageNum - 1) * PAGE_SIZE).limit(PAGE_SIZE).toList();
         List<ListingDto> listingDtos = gpuListings.stream()
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, targetCurrency.orElse(null)))
                 .collect(Collectors.toList());
-        if (sortByPrice) {
-            listingDtos.sort(Comparator.comparing(ListingDto::getPrice));
-        }
         return new ListingsPageDto(pageNum, totalPages, listingDtos);
     }
 

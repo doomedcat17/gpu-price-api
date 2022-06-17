@@ -2,6 +2,7 @@ package com.doomedcat17.gpupriceapi.dto;
 
 import com.doomedcat17.gpupriceapi.domain.ChipsetProducer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class ListingDto {
     private String name;
     private String model;

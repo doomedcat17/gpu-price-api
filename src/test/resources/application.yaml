@@ -18,7 +18,7 @@ spring:
     active: test
 doomedcat17:
   gpu-price-api:
-    initOnStart: true
+    initOnStart: false
     on-failure-wait-time-ms: 30000
     scheduling:
       enabled: false

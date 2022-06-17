@@ -67,10 +67,10 @@ public class GpuListingService {
         if (gpuModel.isPresent()) spec = spec.and(GpuListingRepository.hasModel(gpuModel.get()));
         if (!sellers.isEmpty()) spec = spec.and(GpuListingRepository.hasSeller(sellers));
         if (isAvailable) spec = spec.and(GpuListingRepository.isAvailable());
+        if ((before.isPresent() && after.isPresent()) && after.get().isAfter(before.get()))
+            throw Problem.valueOf(Status.BAD_REQUEST, "after date can't be before 'before date'");
         if (after.isPresent()) spec = spec.and(GpuListingRepository.isLastUpdateAfter(after.get()));
         if (before.isPresent()) spec = spec.and(GpuListingRepository.isLastUpdateBefore(before.get()));
-        if ((before.isPresent() && after.isPresent()) && before.get().isAfter(after.get()))
-            throw Problem.valueOf(Status.BAD_REQUEST, "before date can't be after after date");
         return spec;
     }
 
