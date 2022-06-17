@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+!/src/test/java/com/doomedcat17/gpupriceapi/integration/ListingsDtoServiceIntegrationTest.java

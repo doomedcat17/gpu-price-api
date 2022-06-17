@@ -25,7 +25,7 @@ class AmazonSearchListingElementsScraperTest {
     @BeforeAll
     static void init() {
         gpuModel = new GpuModel();
-        gpuModel.setName("rtx 3080");
+        gpuModel.setName("RTX_3080");
         gpuModel.setRegex(".*rtx.?3080(?:(?!.?ti.?)(?:(?!.*super).*)).*");
         gpuModel.setMsrpInDollars(new BigDecimal("699.00"));
     }

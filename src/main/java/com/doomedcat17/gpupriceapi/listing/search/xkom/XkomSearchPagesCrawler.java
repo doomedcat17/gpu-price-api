@@ -28,25 +28,25 @@ public class XkomSearchPagesCrawler implements SellerSearchPagesCrawler {
     @Override
     public List<Document> getSearchPages(GpuModel model, String searchUrl) {
         List<Document> pages = new ArrayList<>();
-        Optional<Document> foundPage = getFirst(model, searchUrl);
+        Optional<Document> foundPage = getFirst(searchUrl, model);
         while (foundPage.isPresent()) {
             pages.add(foundPage.get());
             currentPage++;
-            foundPage = getNext(searchUrl);
+            foundPage = getNext(searchUrl, model);
         }
         webClient.close();
         currentPage = 0;
         return pages;
     }
 
-    public Optional<Document> getFirst(GpuModel model, String searchUrl) {
-        String url = searchUrl + SEARCH_PHRASE_PARAMETER +
-                URLEncoder.encode(model.getName().replace('_', ' '), StandardCharsets.UTF_8);
-        return Optional.of(getPage(url));
+    public Optional<Document> getFirst(String searchUrl, GpuModel model) {
+        searchUrl = appendSearchQuery(model, searchUrl);
+        return Optional.of(getPage(searchUrl));
     }
 
 
-    public Optional<Document> getNext(String searchUrl) {
+    public Optional<Document> getNext(String searchUrl, GpuModel model) {
+        searchUrl = appendSearchQuery(model, searchUrl);
         if (searchUrl.contains("page")) {
             int index = searchUrl.lastIndexOf('=');
             searchUrl = searchUrl.substring(0, index);
@@ -54,9 +54,14 @@ public class XkomSearchPagesCrawler implements SellerSearchPagesCrawler {
         } else searchUrl += "&page=" + currentPage;
         Document page = getPage(searchUrl);
         Element paginationElement = page.selectFirst("input.sc-11oikyw-1");
-        int maxNuumber = Integer.parseInt(paginationElement.attr("max"));
-        if (currentPage > maxNuumber) return Optional.empty();
+        int maxNumber = Integer.parseInt(paginationElement.attr("max"));
+        if (currentPage > maxNumber) return Optional.empty();
         else return Optional.of(page);
+    }
+
+    public String appendSearchQuery(GpuModel model, String searchUrl) {
+        return searchUrl + SEARCH_PHRASE_PARAMETER +
+                URLEncoder.encode(model.getName().replace('_', ' '), StandardCharsets.UTF_8);
     }
 
 

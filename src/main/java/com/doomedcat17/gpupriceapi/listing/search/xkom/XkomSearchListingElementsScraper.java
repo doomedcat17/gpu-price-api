@@ -51,7 +51,7 @@ public class XkomSearchListingElementsScraper implements SearchListingElementsSc
     }
 
     private String scrapPageId(String url) {
-        int startIndex = url.indexOf('/', 1);
+        int startIndex = url.indexOf('/', 1) + 1;
         int endIndex = url.indexOf('-');
         return url.substring(startIndex, endIndex);
     }
