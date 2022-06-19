@@ -10,7 +10,7 @@ public class SellerSearchPagesCrawlerFactory {
     public static SellerSearchPagesCrawler getCrawler(String sellerName) {
         if (sellerName.startsWith("Amazon")) {
             return new AmazonSearchPagesCrawler(new PoliteWebClient());
-        } else if (sellerName.equals("X_KOM"))
+        } else if (sellerName.equals("X-KOM"))
             return new XkomSearchPagesCrawler(new PoliteWebClient());
         else throw new CrawlerNotFoundException(sellerName);
     }

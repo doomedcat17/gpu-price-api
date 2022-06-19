@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -54,6 +55,7 @@ public class XkomSearchPagesCrawler implements SellerSearchPagesCrawler {
         } else searchUrl += "&page=" + currentPage;
         Document page = getPage(searchUrl);
         Element paginationElement = page.selectFirst("input.sc-11oikyw-1");
+        if (Objects.isNull(paginationElement)) return Optional.empty();
         int maxNumber = Integer.parseInt(paginationElement.attr("max"));
         if (currentPage > maxNumber) return Optional.empty();
         else return Optional.of(page);

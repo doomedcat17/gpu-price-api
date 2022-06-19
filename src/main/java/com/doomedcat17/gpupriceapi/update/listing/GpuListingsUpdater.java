@@ -4,7 +4,6 @@ import com.doomedcat17.gpupriceapi.domain.GpuListing;
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.domain.log.GpuListingUpdateLog;
-import com.doomedcat17.gpupriceapi.exception.listing.seller.CrawlerFailingStatusCodeException;
 import com.doomedcat17.gpupriceapi.listing.ListingProvider;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListingElementsScraper;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListingElementsScraperFactory;
@@ -97,7 +96,7 @@ public class GpuListingsUpdater {
             updateLog.setSeller(seller);
             updateLog.setNumberOfUpdatedListings(listings.size());
             logService.saveLog(updateLog);
-        } catch (CrawlerFailingStatusCodeException e) {
+        } catch (Exception e) {
             log.error("Failed while scraping " + seller.getName() + " for " + model.getName());
             log.error("Exception message: " + e.getMessage());
             return false;

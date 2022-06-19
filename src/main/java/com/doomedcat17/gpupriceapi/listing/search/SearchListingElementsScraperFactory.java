@@ -9,7 +9,7 @@ public class SearchListingElementsScraperFactory {
     public static SearchListingElementsScraper getScraper(String sellerName) {
         if (sellerName.startsWith("Amazon")) {
             return new AmazonSearchListingElementsScraper();
-        } else if (sellerName.equals("X_KOM"))
+        } else if (sellerName.equals("X-KOM"))
             return new XkomSearchListingElementsScraper();
         else throw new CrawlerNotFoundException(sellerName);
     }

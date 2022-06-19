@@ -30,5 +30,13 @@
     "currency": {
       "code": "PLN"
     }
+  },
+  {
+    "name": "X-KOM",
+    "url": "https://www.x-kom.pl/",
+    "searchUrl": "https://www.x-kom.pl/szukaj?sort_by=accuracy_desc&f%5Bgroups%5D%5B5%5D=1&f%5Bcategories%5D%5B345%5D=1",
+    "currency": {
+      "code": "PLN"
+    }
   }
 ]
