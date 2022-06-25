@@ -37,5 +37,10 @@ public class CurrencyService {
         return currencyRepository.findByCode(code);
     }
 
+    @Cacheable
+    public List<Currency> getAllCurrencies() {
+        return currencyRepository.findAll();
+    }
+
 
 }
