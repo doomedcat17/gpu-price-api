@@ -5,10 +5,7 @@ import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
 import com.doomedcat17.gpupriceapi.service.ListingsDtoService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +14,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/v1/api/gpu/listings")
 @AllArgsConstructor
+@CrossOrigin
 public class GpuListingController {
 
     private ListingsDtoService listingService;
@@ -30,9 +28,11 @@ public class GpuListingController {
         return listingService.getLatest(modelName, currencyCode, sellerNames, page);
     }
 
+
     @GetMapping("/cheapest")
     public List<ListingDto> getCheapest(@RequestParam(name = "currency", defaultValue = "USD", required = false) String currencyCode,
                                         @RequestParam(name = "except", defaultValue = "", required = false) Set<String> sellerNames) {
+        System.out.println(currencyCode);
         return listingService.getCheapestPerModel(currencyCode, sellerNames);
     }
 
