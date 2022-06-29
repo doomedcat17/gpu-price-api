@@ -17,7 +17,7 @@ jobs:
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
+        key: ${{secrets.VPS_KEY}}
         port: ${{ secrets.VPS_PORT }}
         script: |
           docker rm -f gpu-price
