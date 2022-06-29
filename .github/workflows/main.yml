@@ -13,7 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: VPS deploy
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v0.1.4
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
