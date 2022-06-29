@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2
+    -
+      name: VPS - pull image and run app containters
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          docker rm -f gpu-price
+          docker image rm gpu-price-api_web
+          cd github-build
+          rm -d gpu-price-api
+          git clone https://github.com/doomedcat17/gpu-price-api.git
+          cd gpu-price-api
+          docker-compose up -d
