@@ -9,12 +9,12 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_CONFIG_NAME=application-prod.yaml
-      - SPRING_CONFIG_LOCATION=file:///run/secrets/application-prod.yaml
+      - SPRING_CONFIG_LOCATION=file:///run/secrets/gpu-api-props.yaml
       - TZ=UTC
     secrets:
-      - application-prod.yaml
+      - gpu-api-props.yaml
 networks:
   main:
 secrets:
-  application-prod.yaml:
+  gpu-api-props.yaml:
     external: true
