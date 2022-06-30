@@ -22,7 +22,7 @@ jobs:
           docker stack remove gpu-web-api
           docker image rm gpu-api
           cd github-build
-          rm -d gpu-price-api
+          rm -rf gpu-price-api
           git clone https://github.com/doomedcat17/gpu-price-api.git
           cd gpu-price-api
           docker build -t gpu-api .
