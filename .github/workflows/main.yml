@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,10 +19,11 @@ jobs:
         key: ${{secrets.VPS_KEY}}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          docker rm -f gpu-price
-          docker image rm gpu-price-api_web
+          docker stack remove gpu-web-api
+          docker image rm gpu-api
           cd github-build
           rm -d gpu-price-api
           git clone https://github.com/doomedcat17/gpu-price-api.git
           cd gpu-price-api
-          docker-compose up -d
+          docker build -t gpu-api .
+          docker stack deploy -c docker-compose.yaml gpu-web-api

@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  web:
+    image: gpu-price-api:latest
+    ports:
+      - "80:8080"
+    networks:
+      - main
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CONFIG_NAME=application-prod.yaml
+      - SPRING_CONFIG_LOCATION=file:///run/secrets/application-prod.yaml
+      - TZ=UTC
+    secrets:
+      - application-prod.yaml
+networks:
+  main:
+secrets:
+  application-prod.yaml:
+    external: true
