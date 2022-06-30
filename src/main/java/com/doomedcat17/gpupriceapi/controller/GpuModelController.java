@@ -22,7 +22,6 @@ public class GpuModelController {
     public List<GpuModelDto> getGpuModels(@RequestParam(name = "chipsetProducer", required = false) ChipsetProducer chipsetProducer,
                                           @RequestParam(name = "currency", defaultValue = "", required = false) String currencyCode) {
 
-        List<GpuModelDto> modelDtos = modelService.getGpuModels(chipsetProducer, currencyCode);
-        return modelDtos;
+        return modelService.getGpuModels(chipsetProducer, currencyCode);
     }
 }
