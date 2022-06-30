@@ -102,8 +102,10 @@ class ListingsDtoServiceTest {
 
 
         //when
-        List<ListingDto> cheapestListings = listingsDtoService.getCheapestPerModel("USD", Set.of());
+        ListingsPageDto listingsPageDto = listingsDtoService.getCheapestPerModel("USD", Set.of());
+
         //then
+        List<ListingDto> cheapestListings = listingsPageDto.getListings();
         assertEquals(3, cheapestListings.size());
         assertEquals(new BigDecimal("455.82"), cheapestListings.get(0).getPrice());
         assertEquals(new BigDecimal("429.80"), cheapestListings.get(1).getPrice());

@@ -1,6 +1,7 @@
 package com.doomedcat17.gpupriceapi.integration;
 
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
+import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
 import com.doomedcat17.gpupriceapi.service.ListingsDtoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -72,9 +73,10 @@ class ListingsDtoServiceIntegrationTest {
                 "RX_6650_XT", new BigDecimal("560.20")
         );
         //when
-        List<ListingDto> listingDtos = listingsDtoService.getCheapestPerModel("USD", Set.of());
+        ListingsPageDto listingsPageDto = listingsDtoService.getCheapestPerModel("USD", Set.of());
 
         //then
+        List<ListingDto> listingDtos = listingsPageDto.getListings();
         assertEquals(9, listingDtos.size());
         assertTrue(listingDtos.stream().allMatch(listingDto -> listingDto.getCurrencyCode().equals("USD")));
         assertTrue(listingDtos.stream().allMatch(
