@@ -63,7 +63,7 @@ public class ListingsDtoService {
         return new ListingsPageDto(pageNum, totalPages, listingDtos);
     }
 
-    public List<ListingDto> getCheapestPerModel(String currencyCode, Set<String> ignoreSellers) {
+    public ListingsPageDto getCheapestPerModel(String currencyCode, Set<String> ignoreSellers) {
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
         if (targetCurrency.isEmpty())
             throw Problem.valueOf(Status.BAD_REQUEST, "Currency is required for this operation");
@@ -77,7 +77,11 @@ public class ListingsDtoService {
                 .min(Comparator.comparing(o -> o.getPrice().multiply(o.getSeller().getCurrency().getRateInUSD())))
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, targetCurrency.orElse(null)))
                 .ifPresent(listings::add));
-        return listings;
+        ListingsPageDto listingsPageDto = new ListingsPageDto();
+        listingsPageDto.setListings(listings);
+        listingsPageDto.setTotalPages(1);
+        listingsPageDto.setPage(1);
+        return listingsPageDto;
     }
 
 
