@@ -3,9 +3,9 @@ services:
   web:
     image: gpu-api:latest
     ports:
-      - "80:8080"
-    networks:
-      - main
+      - target: 8080
+        published: 80
+        mode: host
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_CONFIG_NAME=application-prod.yaml
@@ -13,8 +13,6 @@ services:
       - TZ=UTC
     secrets:
       - gpu-api-props.yaml
-networks:
-  main:
 secrets:
   gpu-api-props.yaml:
     external: true
