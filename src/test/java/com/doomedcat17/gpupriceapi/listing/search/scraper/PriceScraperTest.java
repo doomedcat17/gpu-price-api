@@ -14,14 +14,15 @@ class PriceScraperTest {
     private PriceScraper priceScraper = new PriceScraper();
 
     @ParameterizedTest
-    @CsvSource( value = {
+    @CsvSource(value = {
             "5\u00A0552,38\u00A0zł:PLN:zł:5552.38",
             "€1,066.47:EUR:€:1066.47",
             "$879.99:USD:$:879.99",
             "£1,294.96:GPB:£:1294.96",
-            "5 459,00 zł:PLN:zł:5459.00"
+            "5 459,00 zł:PLN:zł:5459.00",
+            "â‚¬1699.00:EUR:€:1699.00"
     }, delimiter = ':')
-    void shouldScrapSearchListingsFromAmazonDE(String elementContent, String currencyCode, String currencySymbol, String expectedOutput) {
+    void shouldScrapPrices(String elementContent, String currencyCode, String currencySymbol, String expectedOutput) {
         //given
         Element element = new Element("span");
         element.appendText(elementContent);
