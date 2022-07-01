@@ -38,5 +38,13 @@
     "currency": {
       "code": "PLN"
     }
+  },
+  {
+    "name": "MORELE_NET",
+    "url": "https://www.morele.net/",
+    "searchUrl": "https://www.morele.net/kategoria/karty-graficzne-12/",
+    "currency": {
+      "code": "PLN"
+    }
   }
 ]
