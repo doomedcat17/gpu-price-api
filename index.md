@@ -25,6 +25,7 @@ Retruns listings based on parameters
 https://gpuapi.bieda.it/api/v1/gpu/listings
 ```
 | Paramater  | Default value | Details |
+
 | ------------- | ------------- | ------------- |
 | model  | None  | Returns all listings with given model . If not specified, returns listings for all models. |
 | seller  | None  | Returns all listings with given sellers. If not specified,  returns listings from all sellers. You can provide multiple seller names by repeating parameter.|
