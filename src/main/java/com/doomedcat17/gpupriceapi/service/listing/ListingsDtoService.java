@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.service;
+package com.doomedcat17.gpupriceapi.service.listing;
 
 import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.domain.GpuListing;
@@ -6,13 +6,18 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
+import com.doomedcat17.gpupriceapi.exception.service.CurrencyNotFoundException;
+import com.doomedcat17.gpupriceapi.exception.service.InvalidModelNameException;
+import com.doomedcat17.gpupriceapi.exception.service.InvalidPageNumberException;
+import com.doomedcat17.gpupriceapi.exception.service.MissingCurrencyException;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
 import com.doomedcat17.gpupriceapi.service.mapper.ListingDtoMapper;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,6 +36,8 @@ public class ListingsDtoService {
     private final Integer PAGE_SIZE = 50;
 
     public ListingsPageDto getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, int page, boolean availableOnly) {
+        if (page == 0)
+            throw new InvalidPageNumberException();
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
         Optional<GpuModel> presentGpuModel = getModel(modelName);
         Set<Seller> sellers = getSellers(sellerNames);
@@ -42,13 +49,13 @@ public class ListingsDtoService {
 
     }
 
-    public ListingsPageDto getLatest(String modelName, String currencyCode, Set<String> sellerNames, int pageNum) {
-        if (pageNum == 0)
-            throw Problem.valueOf(Status.BAD_REQUEST, "Invalid page number");
+    public ListingsPageDto getLatest(String modelName, String currencyCode, Set<String> sellerNames, int page) {
+        if (page == 0)
+            throw new InvalidPageNumberException();
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
         List<GpuListing> gpuListings = gpuListingService.getAllAvailable();
         int totalPages = gpuListings.size() / PAGE_SIZE;
-        if (totalPages % PAGE_SIZE > 0) totalPages++;
+        if (gpuListings.size() % PAGE_SIZE > 0) totalPages++;
         if (!modelName.isBlank()) {
             gpuListings = gpuListings.stream().filter(gpuListing -> gpuListing.getModel().getName().equals(modelName)).toList();
         }
@@ -56,43 +63,49 @@ public class ListingsDtoService {
             gpuListings = gpuListings.stream().filter(gpuListing -> sellerNames.contains(gpuListing.getSeller().getName())).toList();
         }
 
-        gpuListings = gpuListings.stream().skip(pageNum == 1 ? 0 : (long) (pageNum - 1) * PAGE_SIZE).limit(PAGE_SIZE).toList();
+        gpuListings = gpuListings.stream().skip(page == 1 ? 0 : (long) (page - 1) * PAGE_SIZE).limit(PAGE_SIZE).toList();
         List<ListingDto> listingDtos = gpuListings.stream()
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, targetCurrency.orElse(null)))
-                .collect(Collectors.toList());
-        return new ListingsPageDto(pageNum, totalPages, listingDtos);
+                .toList();
+        return new ListingsPageDto(page, totalPages, listingDtos);
     }
 
-    public ListingsPageDto getCheapestPerModel(String currencyCode, Set<String> ignoreSellers) {
+    public ListingsPageDto getCheapest(String modelName, String currencyCode, Set<String> sellerNames, int page) {
         Optional<Currency> targetCurrency = getCurrency(currencyCode);
+        Optional<GpuModel> presentGpuModel = getModel(modelName);
         if (targetCurrency.isEmpty())
-            throw Problem.valueOf(Status.BAD_REQUEST, "Currency is required for this operation");
+            throw new MissingCurrencyException();
+        List<Seller> sellers;
+        if (sellerNames.isEmpty()) sellers = sellerService.getAll();
+        else sellers = sellerNames.stream().map(sellerService::getSeller)
+                .filter(Optional::isPresent).map(Optional::get).toList();
+
+        List<GpuModel> models =
+                presentGpuModel.map(List::of).orElseGet(gpuModelService::getAllModels);
+        List<ListingDto> listings = getCheapest(models, sellers, targetCurrency);
+
+        int totalPages = listings.size() / PAGE_SIZE;
+        if (listings.size() % PAGE_SIZE > 0) totalPages++;
+        listings = listings.stream().skip(page == 1 ? 0 : (long) (page - 1) * PAGE_SIZE).limit(PAGE_SIZE).toList();
+        ListingsPageDto listingsPageDto = new ListingsPageDto();
+        listingsPageDto.setListings(listings);
+        listingsPageDto.setTotalPages(totalPages);
+        listingsPageDto.setPage(page);
+        return listingsPageDto;
+    }
+
+    private List<ListingDto> getCheapest(List<GpuModel> models, List<Seller> sellers, Optional<Currency> targetCurrency) {
         List<ListingDto> listings = new ArrayList<>();
-        List<Seller> sellers = getAllSellersWithoutGiven(ignoreSellers);
-        List<GpuModel> gpuModels = gpuModelService.getAllModels();
-        gpuModels.forEach(gpuModel -> sellers.stream()
+        models.forEach(gpuModel -> sellers.stream()
                 .map(seller -> gpuListingService.getCheapestForModelAndSeller(gpuModel, seller))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .min(Comparator.comparing(o -> o.getPrice().multiply(o.getSeller().getCurrency().getRateInUSD())))
                 .map(gpuListing -> listingDtoMapper.gpuListingToListingDto(gpuListing, targetCurrency.orElse(null)))
                 .ifPresent(listings::add));
-        ListingsPageDto listingsPageDto = new ListingsPageDto();
-        listingsPageDto.setListings(listings);
-        listingsPageDto.setTotalPages(1);
-        listingsPageDto.setPage(1);
-        return listingsPageDto;
+        return listings;
     }
 
-
-    private List<Seller> getAllSellersWithoutGiven(Set<String> sellerNames) {
-        List<Seller> sellers = sellerService.getAll();
-        if (Objects.nonNull(sellerNames) && !sellerNames.isEmpty()) {
-            sellerNames
-                    .forEach(sellerName -> sellers.removeIf(seller -> seller.getName().equals(sellerName)));
-        }
-        return sellers;
-    }
 
     private Set<Seller> getSellers(Set<String> sellerNames) {
         if (Objects.nonNull(sellerNames)) {
@@ -109,7 +122,7 @@ public class ListingsDtoService {
             Optional<GpuModel> foundModel = gpuModelService.getModel(modelName);
             if (foundModel.isPresent()) {
                 return foundModel;
-            } else throw Problem.valueOf(Status.BAD_REQUEST, "Invalid model name");
+            } else throw new InvalidModelNameException();
         }
         return Optional.empty();
     }
@@ -117,7 +130,7 @@ public class ListingsDtoService {
     private Optional<Currency> getCurrency(String currencyCode) {
         if (!currencyCode.isBlank()) {
             Optional<Currency> presentCurrency = currencyService.findByCode(currencyCode);
-            if (presentCurrency.isEmpty()) throw Problem.valueOf(Status.BAD_REQUEST, "Invalid currency code");
+            if (presentCurrency.isEmpty()) throw new CurrencyNotFoundException();
             return presentCurrency;
         }
         return Optional.empty();

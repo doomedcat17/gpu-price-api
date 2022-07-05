@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.service;
+package com.doomedcat17.gpupriceapi.service.currency;
 
 import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.repository.CurrencyRepository;

@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.service;
+package com.doomedcat17.gpupriceapi.service.model;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.repository.GpuModelRepository;

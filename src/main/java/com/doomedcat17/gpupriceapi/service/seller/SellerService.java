@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.service;
+package com.doomedcat17.gpupriceapi.service.seller;
 
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.repository.SellerRepository;

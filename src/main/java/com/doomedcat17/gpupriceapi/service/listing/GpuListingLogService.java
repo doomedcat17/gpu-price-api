@@ -1,4 +1,4 @@
-package com.doomedcat17.gpupriceapi.service;
+package com.doomedcat17.gpupriceapi.service.listing;
 
 import com.doomedcat17.gpupriceapi.domain.log.GpuListingUpdateLog;
 import com.doomedcat17.gpupriceapi.repository.GpuListingUpdateLogRepository;
