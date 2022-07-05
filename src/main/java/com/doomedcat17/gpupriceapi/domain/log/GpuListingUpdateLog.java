@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "update_logs")
+@Table(name = "listings_update_logs")
 public class GpuListingUpdateLog extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "model", nullable = false)
