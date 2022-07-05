@@ -5,9 +5,9 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.exception.CurrencyNotFoundException;
 import com.doomedcat17.gpupriceapi.rates.provider.CurrencyProvider;
-import com.doomedcat17.gpupriceapi.service.CurrencyService;
-import com.doomedcat17.gpupriceapi.service.GpuModelService;
-import com.doomedcat17.gpupriceapi.service.SellerService;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +34,10 @@ public class AppInitializer implements CommandLineRunner {
 
     private volatile boolean isInitialized = false;
     //5 min
-    @Value("${doomedcat17.gpu-price-api.initOnStart}")
-    private volatile boolean initOnStart = false;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
-    private long ON_FALIURE_WAIT_TIME_MS = 5 * 60000L;
+    @Value("${doomedcat17.gpu-price-api.initOnStart:true}")
+    private volatile boolean initOnStart;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
+    private long ON_FALIURE_WAIT_TIME_MS;
 
     @Override
     public void run(String... args) throws Exception {

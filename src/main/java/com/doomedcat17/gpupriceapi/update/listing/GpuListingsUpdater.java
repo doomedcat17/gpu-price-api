@@ -9,10 +9,10 @@ import com.doomedcat17.gpupriceapi.listing.search.SearchListingElementsScraper;
 import com.doomedcat17.gpupriceapi.listing.search.SearchListingElementsScraperFactory;
 import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawler;
 import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawlerFactory;
-import com.doomedcat17.gpupriceapi.service.GpuListingLogService;
-import com.doomedcat17.gpupriceapi.service.GpuListingService;
-import com.doomedcat17.gpupriceapi.service.GpuModelService;
-import com.doomedcat17.gpupriceapi.service.SellerService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingLogService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingService;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +32,8 @@ public class GpuListingsUpdater {
     private final GpuModelService modelService;
     private final SellerService sellerService;
 
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
-    private long ON_FALIURE_WAIT_TIME_MS = 5 * 60000L;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
+    private long ON_FALIURE_WAIT_TIME_MS;
 
     public void update() {
         try {
@@ -51,6 +51,7 @@ public class GpuListingsUpdater {
             }
             log.info("GpuListing update complete");
         } catch (InterruptedException e) {
+
             log.info("GpuListings update interrupted");
             Thread.currentThread().interrupt();
         }
