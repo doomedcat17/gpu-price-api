@@ -4,9 +4,11 @@ import com.doomedcat17.gpupriceapi.domain.GpuListing;
 import com.doomedcat17.gpupriceapi.domain.GpuListing_;
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
+import com.doomedcat17.gpupriceapi.exception.service.InvalidDatesProvidedException;
 import com.doomedcat17.gpupriceapi.repository.GpuListingRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -35,7 +35,8 @@ public class GpuListingService {
     //default sorting by model and seller
     private final Sort DEFAULT_SORT = Sort.by(Sort.Order.desc(GpuListing_.MODEL), Sort.Order.desc(GpuListing_.SELLER));
 
-    private final int PAGE_SIZE = 50;
+    @Value("${doomedcat17.gpu-price-api.page-size:50}")
+    private int PAGE_SIZE;
 
 
     public Page<GpuListing> getListings(Optional<GpuModel> gpuModel, Set<Seller> sellers, LocalDateTime after, LocalDateTime before, int page, boolean isAvailable) {
@@ -68,7 +69,7 @@ public class GpuListingService {
         if (!sellers.isEmpty()) spec = spec.and(GpuListingRepository.hasSeller(sellers));
         if (isAvailable) spec = spec.and(GpuListingRepository.isAvailable());
         if ((before.isPresent() && after.isPresent()) && after.get().isAfter(before.get()))
-            throw Problem.valueOf(Status.BAD_REQUEST, "after date can't be before 'before date'");
+            throw new InvalidDatesProvidedException();
         if (after.isPresent()) spec = spec.and(GpuListingRepository.isLastUpdateAfter(after.get()));
         if (before.isPresent()) spec = spec.and(GpuListingRepository.isLastUpdateBefore(before.get()));
         return spec;
