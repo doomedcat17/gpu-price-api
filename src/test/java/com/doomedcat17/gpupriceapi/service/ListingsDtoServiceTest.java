@@ -8,7 +8,12 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
 import com.doomedcat17.gpupriceapi.init.ResourceLoader;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingService;
+import com.doomedcat17.gpupriceapi.service.listing.ListingsDtoService;
 import com.doomedcat17.gpupriceapi.service.mapper.ListingDtoMapper;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -102,7 +107,7 @@ class ListingsDtoServiceTest {
 
 
         //when
-        ListingsPageDto listingsPageDto = listingsDtoService.getCheapestPerModel("USD", Set.of());
+        ListingsPageDto listingsPageDto = listingsDtoService.getCheapest("USD", Set.of());
 
         //then
         List<ListingDto> cheapestListings = listingsPageDto.getListings();
