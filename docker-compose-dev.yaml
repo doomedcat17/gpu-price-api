@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+    container_name: gpu-price
+    ports:
+      - "8080:8080"
+    networks:
+      - main
+    environment:
+      TZ: UTC
+      SPRING_PROFILES_ACTIVE: dev
+      DB_USER: some_user
+      DB_PASSWORD: superStrongPassword
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: gpuDb
+    depends_on:
+      - db
+  db:
+    image: postgres:14.4-alpine3.16
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+    volumes:
+      - gpu-api-data:/var/lib/pgsql/data
+    environment:
+      POSTGRES_PASSWORD: superStrongPassword
+      POSTGRES_USER: some_user
+      POSTGRES_DB: gpuDb
+networks:
+  main:
+volumes:
+  gpu-api-data:
