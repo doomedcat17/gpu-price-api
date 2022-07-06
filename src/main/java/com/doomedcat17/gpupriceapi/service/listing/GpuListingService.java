@@ -6,7 +6,7 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.exception.service.InvalidDatesProvidedException;
 import com.doomedcat17.gpupriceapi.repository.GpuListingRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
@@ -27,11 +27,11 @@ import java.util.Set;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @CacheConfig(cacheNames = "gpuListings")
 public class GpuListingService {
-    private GpuListingRepository gpuListingRepository;
+    private final GpuListingRepository gpuListingRepository;
     //default sorting by model and seller
     private final Sort DEFAULT_SORT = Sort.by(Sort.Order.desc(GpuListing_.MODEL), Sort.Order.desc(GpuListing_.SELLER));
 
@@ -76,7 +76,7 @@ public class GpuListingService {
     }
 
 
-    public void outdatedListings(GpuModel gpuModel, Seller seller) {
+    public void outdateListings(GpuModel gpuModel, Seller seller) {
         gpuListingRepository.outdateListings(gpuModel, seller);
     }
 

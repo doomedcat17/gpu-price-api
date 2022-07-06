@@ -12,68 +12,79 @@ import com.doomedcat17.gpupriceapi.listing.search.SellerSearchPagesCrawlerFactor
 import com.doomedcat17.gpupriceapi.service.listing.GpuListingLogService;
 import com.doomedcat17.gpupriceapi.service.listing.GpuListingService;
 import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
-import com.doomedcat17.gpupriceapi.service.seller.SellerService;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
-@Component
-@RequiredArgsConstructor
 @Slf4j
-public class GpuListingsUpdater {
+@NoArgsConstructor
+public class GpuListingsUpdater implements Runnable {
 
-    private final GpuListingService gpuListingService;
-    private final GpuListingLogService logService;
+    private long waitTimeMs;
+    private GpuListingService gpuListingService;
+    private GpuListingLogService logService;
+    private GpuModelService modelService;
+    private ExecutorService executorService;
+    private GpuModel model;
+    private List<Seller> sellers;
+    private Instant nextScrapMinTime;
+    private int tries = 1;
 
-    private final GpuModelService modelService;
-    private final SellerService sellerService;
+    public GpuListingsUpdater(long waitTimeMs, GpuListingService gpuListingService, GpuListingLogService logService, GpuModelService modelService, ExecutorService executorService, GpuModel model, List<Seller> sellers) {
+        this.waitTimeMs = waitTimeMs;
+        this.gpuListingService = gpuListingService;
+        this.logService = logService;
+        this.modelService = modelService;
+        this.executorService = executorService;
+        this.model = model;
+        this.sellers = sellers;
+    }
 
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
-    private long ON_FALIURE_WAIT_TIME_MS;
-
-    public void update() {
+    @Override
+    public void run() {
         try {
-            log.info("Staring GpuListing update...");
-            List<GpuModel> models = modelService.getAllModels();
-            List<Seller> sellers = sellerService.getAll();
-            ListingProvider provider = new ListingProvider(models);
-            Set<FailedScrap> failedScrapSet = updateListings(models, sellers, provider);
-            while (!failedScrapSet.isEmpty()) {
-                log.info("Failed scraps: " + failedScrapSet.size());
-                log.info("Going to sleep for " + ON_FALIURE_WAIT_TIME_MS + "ms");
-                Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
-                log.info("Retrying updating failed scraps...");
-                failedScrapSet = retryFailedScraps(failedScrapSet, provider);
+            if (tries == 1) {
+                update();
+            } else {
+                Instant now = Instant.now();
+                if (nextScrapMinTime.isAfter(now)) {
+                    long millis = nextScrapMinTime.toEpochMilli() - now.toEpochMilli() + 10;
+                    log.info(model.getName() + " started to soon. Sleeping for " + millis + " milliseconds");
+                    Thread.sleep(millis);
+                    update();
+                }
             }
-            log.info("GpuListing update complete");
         } catch (InterruptedException e) {
-
-            log.info("GpuListings update interrupted");
+            log.error(model.getName() + " updater has been interrupted");
             Thread.currentThread().interrupt();
         }
     }
 
-    public Set<FailedScrap> updateListings(List<GpuModel> models, List<Seller> sellers, ListingProvider provider) {
-        Set<FailedScrap> failedScraps = new HashSet<>();
-        models.forEach(model -> {
-            Optional<FailedScrap> failedScrap = updateListingsForGivenSellers(model, sellers, provider);
-            failedScrap.ifPresent(failedScraps::add);
-        });
-        return failedScraps;
+    private void update() {
+        log.info("Staring " + model.getName() + " listings update. Try number " + tries);
+        ListingProvider provider = new ListingProvider(modelService.getAll());
+        Optional<FailedScrap> failedScrap = updateListingsForGivenSellers(model, sellers, provider);
+        while (failedScrap.isPresent()) {
+            tries++;
+            log.info("Failed scraping for " + failedScrap.get().getSellers().size() + " stores");
+            nextScrapMinTime = Instant.now().plus(waitTimeMs, ChronoUnit.MILLIS);
+            log.info("Scheduling re-scrap. Next scrap min time set for " + LocalDateTime.ofEpochSecond(nextScrapMinTime.getEpochSecond(), 0, ZoneOffset.UTC));
+            sellers = failedScrap.get().getSellers();
+            executorService.execute(this);
+        }
+        log.info(model.getName() + " listings update complete");
     }
 
-    public Set<FailedScrap> retryFailedScraps(Set<FailedScrap> failedScraps, ListingProvider provider) {
-        return failedScraps.stream()
-                .filter(failedScrap ->
-                        updateListingsForGivenSellers(failedScrap.getModel(), failedScrap.getSellers(), provider).isPresent())
-                .collect(Collectors.toSet());
-    }
 
-    private Optional<FailedScrap> updateListingsForGivenSellers(GpuModel model, Collection<Seller> sellers, ListingProvider listingProvider) {
+    public Optional<FailedScrap> updateListingsForGivenSellers(GpuModel model, Collection<Seller> sellers, ListingProvider listingProvider) {
         FailedScrap failedScrap = new FailedScrap(model);
         sellers.stream()
                 .filter(seller -> !updateListings(model, seller, listingProvider))
@@ -89,7 +100,7 @@ public class GpuListingsUpdater {
             SearchListingElementsScraper scraper = SearchListingElementsScraperFactory.getScraper(seller.getName());
             List<GpuListing> listings = listingProvider.getByModel(model, seller, crawler, scraper);
             log.info("Found " + listings.size() + " of " + model.getName() + " on " + seller.getName());
-            gpuListingService.outdatedListings(model, seller);
+            gpuListingService.outdateListings(model, seller);
             listings.forEach(gpuListing -> gpuListingService.saveOrUpdate(gpuListing, seller));
             gpuListingService.evictAllCacheValues();
             GpuListingUpdateLog updateLog = new GpuListingUpdateLog();
@@ -104,6 +115,5 @@ public class GpuListingsUpdater {
         }
         return true;
     }
-
 
 }

@@ -23,7 +23,7 @@ public class GpuModelDtoService {
     private final GpuModelDtoMapper mapper;
 
     public List<GpuModelDto> getGpuModels(ChipsetProducer chipsetProducer, String currencyCode) {
-        List<GpuModel> gpuModels = gpuModelService.getAllModels();
+        List<GpuModel> gpuModels = gpuModelService.getAll();
         if (Objects.nonNull(chipsetProducer))
             gpuModels = gpuModels.stream()
                     .filter(gpuModel -> gpuModel.getChipsetProducer().equals(chipsetProducer)).toList();

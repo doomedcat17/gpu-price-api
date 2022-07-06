@@ -14,8 +14,9 @@ import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
 import com.doomedcat17.gpupriceapi.service.mapper.ListingDtoMapper;
 import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
 import com.doomedcat17.gpupriceapi.service.seller.SellerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class ListingsDtoService {
 
     private final GpuListingService gpuListingService;
@@ -33,7 +34,8 @@ public class ListingsDtoService {
     private final GpuModelService gpuModelService;
     private final SellerService sellerService;
     private final ListingDtoMapper listingDtoMapper;
-    private final Integer PAGE_SIZE = 50;
+    @Value("${doomedcat17.gpu-price-api.page-size:50}")
+    private int PAGE_SIZE = 50;
 
     public ListingsPageDto getListings(String modelName, String currencyCode, Set<String> sellerNames, LocalDateTime after, LocalDateTime before, int page, boolean availableOnly) {
         if (page == 0)
@@ -81,7 +83,7 @@ public class ListingsDtoService {
                 .filter(Optional::isPresent).map(Optional::get).toList();
 
         List<GpuModel> models =
-                presentGpuModel.map(List::of).orElseGet(gpuModelService::getAllModels);
+                presentGpuModel.map(List::of).orElseGet(gpuModelService::getAll);
         List<ListingDto> listings = getCheapest(models, sellers, targetCurrency);
 
         int totalPages = listings.size() / PAGE_SIZE;

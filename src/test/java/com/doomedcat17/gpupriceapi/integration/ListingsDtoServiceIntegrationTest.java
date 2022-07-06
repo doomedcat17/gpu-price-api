@@ -73,7 +73,7 @@ class ListingsDtoServiceIntegrationTest {
                 "RX_6650_XT", new BigDecimal("560.20")
         );
         //when
-        ListingsPageDto listingsPageDto = listingsDtoService.getCheapest("USD", Set.of());
+        ListingsPageDto listingsPageDto = listingsDtoService.getCheapest("", "USD", Set.of(), 1);
 
         //then
         List<ListingDto> listingDtos = listingsPageDto.getListings();

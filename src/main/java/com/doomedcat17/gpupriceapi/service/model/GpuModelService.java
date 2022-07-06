@@ -2,7 +2,6 @@ package com.doomedcat17.gpupriceapi.service.model;
 
 import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.repository.GpuModelRepository;
-import com.doomedcat17.gpupriceapi.service.mapper.GpuModelDtoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,7 +19,6 @@ import java.util.Optional;
 public class GpuModelService {
 
     private GpuModelRepository repository;
-    private GpuModelDtoMapper mapper;
 
     @Cacheable
     public Optional<GpuModel> getModel(String modelName) {
@@ -28,7 +26,7 @@ public class GpuModelService {
     }
 
     @Cacheable
-    public List<GpuModel> getAllModels() {
+    public List<GpuModel> getAll() {
         return repository.findAll();
     }
 
