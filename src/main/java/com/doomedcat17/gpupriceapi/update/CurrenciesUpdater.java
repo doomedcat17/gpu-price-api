@@ -35,7 +35,7 @@ public class CurrenciesUpdater implements Updater {
     private void updateCurrencies() throws InterruptedException {
         try {
             List<Currency> currencies = currencyProvider.getLatestRates();
-            currencyService.updateCurrencies(currencies);
+            currencies.forEach(currencyService::save);
             log.info("Currencies updated");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());

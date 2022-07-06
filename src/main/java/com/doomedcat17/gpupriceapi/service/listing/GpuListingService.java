@@ -9,7 +9,6 @@ import com.doomedcat17.gpupriceapi.repository.GpuListingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -29,7 +28,6 @@ import java.util.Set;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-@CacheConfig(cacheNames = "gpuListings")
 public class GpuListingService {
     private final GpuListingRepository gpuListingRepository;
     //default sorting by model and seller
@@ -53,14 +51,9 @@ public class GpuListingService {
         else return Optional.of(gpuListings.get(0));
     }
 
-    @Cacheable
+    @Cacheable(cacheNames = "latestListings")
     public List<GpuListing> getAllAvailable() {
         return gpuListingRepository.findAll(GpuListingRepository.isAvailable(), DEFAULT_SORT);
-    }
-
-    @CacheEvict(allEntries = true)
-    public void evictAllCacheValues() {
-        log.info("GpuListingsCache cleared");
     }
 
     private Specification<GpuListing> getSpec(Optional<GpuModel> gpuModel, Set<Seller> sellers, Optional<LocalDateTime> after, Optional<LocalDateTime> before, boolean isAvailable) {
@@ -76,11 +69,13 @@ public class GpuListingService {
     }
 
 
+    @CacheEvict(allEntries = true, cacheNames = {"latestListings", "cheapestListings"})
     public void outdateListings(GpuModel gpuModel, Seller seller) {
         gpuListingRepository.outdateListings(gpuModel, seller);
     }
 
-    public void saveOrUpdate(GpuListing listing, Seller seller) {
+    @CacheEvict(key = "#seller.name.concat(#listing.listingPageId)", cacheNames = {"latestListings", "cheapestListings"})
+    public void save(GpuListing listing, Seller seller) {
         Optional<GpuListing> presentListing = gpuListingRepository.findTopByListingPageIdAndSellerOrderByLastCheckedDesc(listing.getListingPageId(), seller);
         if (presentListing.isPresent()) {
             GpuListing presentGpuListing = presentListing.get();

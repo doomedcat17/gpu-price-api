@@ -66,7 +66,7 @@ public class AppInitializer implements CommandLineRunner {
     private void loadGpuModels() {
         log.info("Loading Gpu Models...");
         List<GpuModel> gpuModels = ResourceLoader.loadGpuModelsFromFile();
-        gpuModelService.saveAll(gpuModels);
+        gpuModels.forEach(gpuModelService::save);
         log.info("Gpu Models loaded!");
     }
 
@@ -76,8 +76,10 @@ public class AppInitializer implements CommandLineRunner {
             List<Currency> currencies = currencyProvider.getLatestRates();
             Map<String, String> currencySymbolsMap = ResourceLoader.loadCurrencySymbols();
             currencies.forEach(currency ->
-                    currency.setSymbol(currencySymbolsMap.get(currency.getCode())));
-            currencyService.updateCurrencies(currencies);
+            {
+                currency.setSymbol(currencySymbolsMap.get(currency.getCode()));
+                currencyService.save(currency);
+            });
             log.info("Currencies updated!");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
@@ -93,8 +95,8 @@ public class AppInitializer implements CommandLineRunner {
             Optional<Currency> foundCurrency = currencyService.findByCode(seller.getCurrency().getCode());
             if (foundCurrency.isPresent()) seller.setCurrency(foundCurrency.get());
             else throw new CurrencyNotFoundException(seller.getCurrency().getCode());
+            sellerService.save(seller);
         }
-        sellerService.saveAll(sellers);
         log.info("Sellers loaded!");
     }
 

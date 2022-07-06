@@ -4,7 +4,7 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.repository.SellerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class SellerService {
 
     private SellerRepository sellerRepository;
 
-    @Cacheable
+    @Cacheable(key = "#sellerName")
     public Optional<Seller> getSeller(String sellerName) {
         return sellerRepository.getByName(sellerName);
     }
@@ -30,18 +30,14 @@ public class SellerService {
         return sellerRepository.findAll();
     }
 
-    @CacheEvict(allEntries = true)
-    public void saveAll(List<Seller> sellers) {
-        for (Seller seller : sellers) {
-            Optional<Seller> foundSeller = sellerRepository.getByName(seller.getName());
-            if (foundSeller.isPresent()) {
-                Seller presentSeller = foundSeller.get();
-                presentSeller.setCurrency(seller.getCurrency());
-                presentSeller.setUrl(seller.getUrl());
-                presentSeller.setSearchUrl(seller.getSearchUrl());
-            } else sellerRepository.save(seller);
-        }
-
-
+    @CachePut(key = "#seller.name")
+    public void save(Seller seller) {
+        Optional<Seller> foundSeller = sellerRepository.getByName(seller.getName());
+        if (foundSeller.isPresent()) {
+            Seller presentSeller = foundSeller.get();
+            presentSeller.setCurrency(seller.getCurrency());
+            presentSeller.setUrl(seller.getUrl());
+            presentSeller.setSearchUrl(seller.getSearchUrl());
+        } else sellerRepository.save(seller);
     }
 }

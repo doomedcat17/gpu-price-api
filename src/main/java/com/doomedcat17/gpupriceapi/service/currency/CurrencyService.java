@@ -20,19 +20,17 @@ public class CurrencyService {
 
     private CurrencyRepository currencyRepository;
 
-    @CacheEvict
-    public void updateCurrencies(List<Currency> currencies){
-        for (Currency currency : currencies) {
-            Optional<Currency> presentCurrency = currencyRepository
-                    .findByCode(currency.getCode());
-            if (presentCurrency.isPresent()) {
-                presentCurrency.get().setRateInUSD(currency.getRateInUSD());
-                presentCurrency.get().setEffectiveDate(currency.getEffectiveDate());
-            } else currencyRepository.save(currency);
-        }
+    @CacheEvict(key = "#currency.code")
+    public void save(Currency currency) {
+        Optional<Currency> presentCurrency = currencyRepository
+                .findByCode(currency.getCode());
+        if (presentCurrency.isPresent()) {
+            presentCurrency.get().setRateInUSD(currency.getRateInUSD());
+            presentCurrency.get().setEffectiveDate(currency.getEffectiveDate());
+        } else currencyRepository.save(currency);
     }
 
-    @Cacheable
+    @Cacheable(key = "#code")
     public Optional<Currency> findByCode(String code) {
         return currencyRepository.findByCode(code);
     }
