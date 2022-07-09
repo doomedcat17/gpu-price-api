@@ -385,4 +385,13 @@ https://gpuapi.bieda.it/api/v1/update
     "time": "2022-07-04T18:28:57"
 }
 ```
+### Error Responses
+Table of possible error responses
 
+| Cause  | Code | Response body |
+| ------------- | ------------- | ------------- |
+| Invalid resource path  | 404  | `{"title": "Not Found", "status": 404,"detail": "Resource not found"}` |
+| Invalid currency code  | 400  | `{"title": "Bad Request", "status": 400,"detail": "Invalid currency code"}`|
+| Invalid *before* value | 400  | `{"title": "Bad Request", "status": 400,"detail": "after date can't be before 'before date'"}`|
+| Invalid model parameter  | 400  | `{"title": "Bad Request", "status": 400,"detail": "Invalid model name"}`|
+| Invalid page parameter  | 400  | `{"title": "Bad Request", "status": 400,"detail": "Invalid page number"}`|
