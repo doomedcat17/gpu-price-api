@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class GpuListingService {
 
     }
 
-    @Cacheable(cacheNames = "cheapestListings")
+    @Cacheable(cacheNames = "cheapestListings", key = "#seller.name.concat(#model.name)", unless = "#result == null")
     public Optional<GpuListing> getCheapestForModelAndSeller(GpuModel model, Seller seller) {
         List<GpuListing> gpuListings = gpuListingRepository.findCheapestForSellerAndModel(seller, model);
         if (gpuListings.isEmpty()) return Optional.empty();
@@ -74,7 +75,10 @@ public class GpuListingService {
         gpuListingRepository.outdateListings(gpuModel, seller);
     }
 
-    @CacheEvict(key = "#seller.name.concat(#listing.listingPageId)", cacheNames = {"latestListings", "cheapestListings"})
+    @Caching(evict = {
+            @CacheEvict(key = "#seller.name.concat(#listing.listingPageId)", cacheNames = "latestListings"),
+            @CacheEvict(key = "#seller.name.concat(#listing.model.name)", cacheNames = "cheapestListings")
+    })
     public void save(GpuListing listing, Seller seller) {
         Optional<GpuListing> presentListing = gpuListingRepository.findTopByListingPageIdAndSellerOrderByLastCheckedDesc(listing.getListingPageId(), seller);
         if (presentListing.isPresent()) {

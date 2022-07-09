@@ -4,7 +4,7 @@ import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.repository.SellerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class SellerService {
         return sellerRepository.findAll();
     }
 
-    @CachePut(key = "#seller.name")
+    @CacheEvict(key = "#seller.name")
     public void save(Seller seller) {
         Optional<Seller> foundSeller = sellerRepository.getByName(seller.getName());
         if (foundSeller.isPresent()) {
