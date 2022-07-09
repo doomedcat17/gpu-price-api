@@ -1,6 +1,6 @@
 spring:
   redis:
-    host: localhost
+    host: ${REDIS_HOST}
   cache:
     type: redis
     redis:
@@ -23,5 +23,5 @@ logging:
 doomedcat17:
   gpu-price-api:
     initOnStart: true
-    on-failure-wait-time-ms: 30000
+    on-failure-wait-time: 30000
     page-size: 50
