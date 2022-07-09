@@ -30,7 +30,7 @@ public class CurrencyService {
         } else currencyRepository.save(currency);
     }
 
-    @Cacheable(key = "#code")
+    @Cacheable(key = "#code", unless = "#result == null")
     public Optional<Currency> findByCode(String code) {
         return currencyRepository.findByCode(code);
     }

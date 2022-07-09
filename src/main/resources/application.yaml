@@ -1,4 +1,6 @@
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
   redis:
     host: ${REDIS_HOST}
   cache:
@@ -17,6 +19,9 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+  web:
+    resources:
+      add-mappings: false
 logging:
   level:
     com.gargoylesoftware: OFF
