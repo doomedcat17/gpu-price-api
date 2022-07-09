@@ -13,6 +13,7 @@ services:
       - TZ=UTC
     secrets:
       - gpu-api-props.yaml
+
 secrets:
   gpu-api-props.yaml:
     external: true

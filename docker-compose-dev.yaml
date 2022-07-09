@@ -10,28 +10,13 @@ services:
       - main
     environment:
       TZ: UTC
-      SPRING_PROFILES_ACTIVE: dev
-      DB_USER: some_user
-      DB_PASSWORD: superStrongPassword
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: gpuDb
-    depends_on:
-      - db
-  db:
-    image: postgres:14.4-alpine3.16
-    restart: always
+      SPRING_PROFILES_ACTIVE: h2
+      REDIS_HOST: redis
+  redis:
+    image: redis:7.0.2-alpine
     ports:
-      - "5432:5432"
+      - "6379:6379"
     networks:
       - main
-    volumes:
-      - gpu-api-data:/var/lib/pgsql/data
-    environment:
-      POSTGRES_PASSWORD: superStrongPassword
-      POSTGRES_USER: some_user
-      POSTGRES_DB: gpuDb
 networks:
   main:
-volumes:
-  gpu-api-data:
