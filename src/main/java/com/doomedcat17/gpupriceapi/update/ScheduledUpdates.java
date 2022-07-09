@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -34,8 +34,8 @@ public class ScheduledUpdates {
     private final UpdateLogService updateLogService;
     private final GpuListingService gpuListingService;
     private final GpuListingLogService gpuListingLogService;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
-    private long ON_FALIURE_WAIT_TIME_MS;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
     @Value("${doomedcat17.gpu-price-api.number-of-update-threads:2}")
     private int NUMBER_OF_UPDATE_THREADS;
 
@@ -45,13 +45,9 @@ public class ScheduledUpdates {
             while (!appInitializer.isInitialized()) appInitializer.wait();
             List<GpuModel> models = gpuModelService.getAll();
             List<Seller> sellers = sellerService.getAll();
-            ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_UPDATE_THREADS);
+            ThreadPoolExecutor executorService = new ThreadPoolExecutor(NUMBER_OF_UPDATE_THREADS, NUMBER_OF_UPDATE_THREADS, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
             models.forEach(model -> executorService.execute(
-                    new GpuListingsUpdater(ON_FALIURE_WAIT_TIME_MS, gpuListingService, gpuListingLogService, gpuModelService, executorService, model, sellers)));
-            executorService.shutdown();
-            executorService.awaitTermination(6, TimeUnit.HOURS);
-            log.info("Update complete");
-            updateLogService.addLog(new UpdateLog(LocalDateTime.now()));
+                    new GpuListingsUpdater(ON_FALIURE_WAIT_TIME, gpuListingService, gpuListingLogService, gpuModelService, executorService, model, sellers, updateLogService)));
         }
     }
 

@@ -14,4 +14,5 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 
     Set<Seller> getSellersByNameIn(Set<String> sellerNames);
 
+
 }

@@ -36,8 +36,8 @@ public class AppInitializer implements CommandLineRunner {
     //5 min
     @Value("${doomedcat17.gpu-price-api.initOnStart:true}")
     private volatile boolean initOnStart;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
-    private long ON_FALIURE_WAIT_TIME_MS;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,7 +66,7 @@ public class AppInitializer implements CommandLineRunner {
     private void loadGpuModels() {
         log.info("Loading Gpu Models...");
         List<GpuModel> gpuModels = ResourceLoader.loadGpuModelsFromFile();
-        gpuModelService.saveAll(gpuModels);
+        gpuModels.forEach(gpuModelService::save);
         log.info("Gpu Models loaded!");
     }
 
@@ -76,12 +76,14 @@ public class AppInitializer implements CommandLineRunner {
             List<Currency> currencies = currencyProvider.getLatestRates();
             Map<String, String> currencySymbolsMap = ResourceLoader.loadCurrencySymbols();
             currencies.forEach(currency ->
-                    currency.setSymbol(currencySymbolsMap.get(currency.getCode())));
-            currencyService.updateCurrencies(currencies);
+            {
+                currency.setSymbol(currencySymbolsMap.get(currency.getCode()));
+                currencyService.save(currency);
+            });
             log.info("Currencies updated!");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
-            Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
+            Thread.sleep(ON_FALIURE_WAIT_TIME * 1000);
             loadCurrencies();
         }
     }
@@ -93,8 +95,8 @@ public class AppInitializer implements CommandLineRunner {
             Optional<Currency> foundCurrency = currencyService.findByCode(seller.getCurrency().getCode());
             if (foundCurrency.isPresent()) seller.setCurrency(foundCurrency.get());
             else throw new CurrencyNotFoundException(seller.getCurrency().getCode());
+            sellerService.save(seller);
         }
-        sellerService.saveAll(sellers);
         log.info("Sellers loaded!");
     }
 

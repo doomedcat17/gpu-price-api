@@ -1,4 +1,10 @@
 spring:
+  redis:
+    host: ${REDIS_HOST}
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
   jpa:
     hibernate:
       ddl-auto: none
@@ -8,11 +14,14 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
 logging:
   level:
     com.gargoylesoftware: OFF
 doomedcat17:
   gpu-price-api:
     initOnStart: true
-    on-failure-wait-time-ms: 30000
+    on-failure-wait-time: 30000
     page-size: 50

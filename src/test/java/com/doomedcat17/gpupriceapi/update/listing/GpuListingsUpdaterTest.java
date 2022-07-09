@@ -62,7 +62,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService).outdateListings(model, seller);
-        verify(gpuListingService).saveOrUpdate(gpuListing, seller);
+        verify(gpuListingService).save(gpuListing, seller);
         verify(logService).saveLog(any());
         assertTrue(presentFiledScrap.isEmpty());
 
@@ -78,7 +78,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService, never()).outdateListings(any(), any());
-        verify(gpuListingService, never()).saveOrUpdate(any(), any());
+        verify(gpuListingService, never()).save(any(), any());
         verify(logService, never()).saveLog(any());
         assertTrue(presentFiledScrap.isPresent());
 
@@ -98,7 +98,7 @@ class GpuListingsUpdaterTest {
 
         //then
         verify(gpuListingService, never()).outdateListings(any(), any());
-        verify(gpuListingService, never()).saveOrUpdate(any(), any());
+        verify(gpuListingService, never()).save(any(), any());
         verify(logService, never()).saveLog(any());
         assertTrue(presentFiledScrap.isPresent());
         assertEquals(3, presentFiledScrap.get().getSellers().size());
