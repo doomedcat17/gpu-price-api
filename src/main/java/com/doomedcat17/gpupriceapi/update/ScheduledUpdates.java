@@ -34,8 +34,8 @@ public class ScheduledUpdates {
     private final UpdateLogService updateLogService;
     private final GpuListingService gpuListingService;
     private final GpuListingLogService gpuListingLogService;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
-    private long ON_FALIURE_WAIT_TIME_MS;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
     @Value("${doomedcat17.gpu-price-api.number-of-update-threads:2}")
     private int NUMBER_OF_UPDATE_THREADS;
 
@@ -47,7 +47,7 @@ public class ScheduledUpdates {
             List<Seller> sellers = sellerService.getAll();
             ThreadPoolExecutor executorService = new ThreadPoolExecutor(NUMBER_OF_UPDATE_THREADS, NUMBER_OF_UPDATE_THREADS, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
             models.forEach(model -> executorService.execute(
-                    new GpuListingsUpdater(ON_FALIURE_WAIT_TIME_MS, gpuListingService, gpuListingLogService, gpuModelService, executorService, model, sellers, updateLogService)));
+                    new GpuListingsUpdater(ON_FALIURE_WAIT_TIME, gpuListingService, gpuListingLogService, gpuModelService, executorService, model, sellers, updateLogService)));
         }
     }
 

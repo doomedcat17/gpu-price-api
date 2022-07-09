@@ -36,8 +36,8 @@ public class AppInitializer implements CommandLineRunner {
     //5 min
     @Value("${doomedcat17.gpu-price-api.initOnStart:true}")
     private volatile boolean initOnStart;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms:30000}")
-    private long ON_FALIURE_WAIT_TIME_MS;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
 
     @Override
     public void run(String... args) throws Exception {
@@ -83,7 +83,7 @@ public class AppInitializer implements CommandLineRunner {
             log.info("Currencies updated!");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
-            Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
+            Thread.sleep(ON_FALIURE_WAIT_TIME * 1000);
             loadCurrencies();
         }
     }

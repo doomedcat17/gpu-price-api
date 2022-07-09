@@ -79,15 +79,14 @@ public class GpuListingsUpdater implements Runnable {
         log.info("Staring " + model.getName() + " listings update. Try number " + tries);
         ListingProvider provider = new ListingProvider(modelService.getAll());
         Optional<FailedScrap> failedScrap = updateListingsForGivenSellers(model, sellers, provider);
-        while (failedScrap.isPresent()) {
+        if (failedScrap.isPresent()) {
             tries++;
             log.info("Failed scraping for " + failedScrap.get().getSellers().size() + " stores");
-            nextScrapMinTime = Instant.now().plus(waitTimeMs, ChronoUnit.MILLIS);
+            nextScrapMinTime = Instant.now().plus(waitTimeMs, ChronoUnit.SECONDS);
             log.info("Scheduling re-scrap. Next scrap min time set for " + LocalDateTime.ofEpochSecond(nextScrapMinTime.getEpochSecond(), 0, ZoneOffset.UTC));
             sellers = failedScrap.get().getSellers();
             executorService.execute(this);
-        }
-        log.info(model.getName() + " listings update complete");
+        } else log.info(model.getName() + " listings update complete");
     }
 
 
