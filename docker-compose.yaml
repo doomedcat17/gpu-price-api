@@ -11,9 +11,19 @@ services:
       - SPRING_CONFIG_NAME=application-prod.yaml
       - SPRING_CONFIG_LOCATION=file:///run/secrets/gpu-api-props.yaml
       - TZ=UTC
+      - REDIS_HOST=redis
     secrets:
       - gpu-api-props.yaml
-
+    depends_on:
+      - redis
+  redis:
+    image: redis:7.0.2-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - main
 secrets:
   gpu-api-props.yaml:
     external: true
+networks:
+  main:
