@@ -16,6 +16,8 @@ services:
       - gpu-api-props.yaml
     depends_on:
       - redis
+    networks:
+      - main
   redis:
     image: redis:7.0.2-alpine
     ports:
