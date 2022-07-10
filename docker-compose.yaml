@@ -21,9 +21,7 @@ services:
   redis:
     image: redis:7.0.2-alpine
     ports:
-      - target: 6379
-        published: 6379
-        mode: host
+      - "6379:6379"
     networks:
       - main
 secrets:
