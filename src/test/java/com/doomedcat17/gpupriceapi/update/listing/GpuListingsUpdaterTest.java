@@ -5,8 +5,8 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.exception.listing.seller.CrawlerFailingStatusCodeException;
 import com.doomedcat17.gpupriceapi.listing.ListingProvider;
-import com.doomedcat17.gpupriceapi.service.GpuListingLogService;
-import com.doomedcat17.gpupriceapi.service.GpuListingService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingLogService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +15,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,13 +58,13 @@ class GpuListingsUpdaterTest {
         when(provider.getByModel(same(model), same(seller), any(), any())).thenReturn(listings);
 
         //when
-        Set<FailedScrap> failedScraps = updater.updateListings(List.of(model), List.of(seller), provider);
+        Optional<FailedScrap> presentFiledScrap = updater.updateListingsForGivenSellers(model, List.of(seller), provider);
 
         //then
-        verify(gpuListingService).outdatedListings(model, seller);
-        verify(gpuListingService).saveOrUpdate(gpuListing, seller);
+        verify(gpuListingService).outdateListings(model, seller);
+        verify(gpuListingService).save(gpuListing, seller);
         verify(logService).saveLog(any());
-        assertTrue(failedScraps.isEmpty());
+        assertTrue(presentFiledScrap.isEmpty());
 
     }
 
@@ -73,13 +74,13 @@ class GpuListingsUpdaterTest {
         when(provider.getByModel(same(model), same(seller), any(), any())).thenThrow(new CrawlerFailingStatusCodeException("test message"));
 
         //when
-        Set<FailedScrap> failedScraps = updater.updateListings(List.of(model), List.of(seller), provider);
+        Optional<FailedScrap> presentFiledScrap = updater.updateListingsForGivenSellers(model, List.of(seller), provider);
 
         //then
-        verify(gpuListingService, never()).outdatedListings(any(), any());
-        verify(gpuListingService, never()).saveOrUpdate(any(), any());
+        verify(gpuListingService, never()).outdateListings(any(), any());
+        verify(gpuListingService, never()).save(any(), any());
         verify(logService, never()).saveLog(any());
-        assertFalse(failedScraps.isEmpty());
+        assertTrue(presentFiledScrap.isPresent());
 
     }
 
@@ -93,14 +94,14 @@ class GpuListingsUpdaterTest {
         when(provider.getByModel(same(model), any(), any(), any())).thenThrow(new CrawlerFailingStatusCodeException("test message"));
 
         //when
-        Set<FailedScrap> failedScraps = updater.updateListings(List.of(model), List.of(seller, amazonPlSeller, amazonUKSeller), provider);
+        Optional<FailedScrap> presentFiledScrap = updater.updateListingsForGivenSellers(model, List.of(seller, amazonPlSeller, amazonUKSeller), provider);
 
         //then
-        verify(gpuListingService, never()).outdatedListings(any(), any());
-        verify(gpuListingService, never()).saveOrUpdate(any(), any());
+        verify(gpuListingService, never()).outdateListings(any(), any());
+        verify(gpuListingService, never()).save(any(), any());
         verify(logService, never()).saveLog(any());
-        assertEquals(1, failedScraps.size());
-        assertEquals(3, failedScraps.stream().findAny().get().getSellers().size());
+        assertTrue(presentFiledScrap.isPresent());
+        assertEquals(3, presentFiledScrap.get().getSellers().size());
 
     }
 

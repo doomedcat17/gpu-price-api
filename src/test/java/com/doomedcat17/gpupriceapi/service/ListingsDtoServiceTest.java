@@ -7,8 +7,15 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.dto.ListingDto;
 import com.doomedcat17.gpupriceapi.dto.ListingsPageDto;
+import com.doomedcat17.gpupriceapi.exception.service.CurrencyNotFoundException;
+import com.doomedcat17.gpupriceapi.exception.service.InvalidModelNameException;
 import com.doomedcat17.gpupriceapi.init.ResourceLoader;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
+import com.doomedcat17.gpupriceapi.service.listing.GpuListingService;
+import com.doomedcat17.gpupriceapi.service.listing.ListingsDtoService;
 import com.doomedcat17.gpupriceapi.service.mapper.ListingDtoMapper;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +24,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.zalando.problem.DefaultProblem;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -55,7 +61,7 @@ class ListingsDtoServiceTest {
         when(currencyService.findByCode(anyString())).thenReturn(Optional.empty());
 
         //when
-        Exception exception = assertThrows(DefaultProblem.class, () -> listingsDtoService.getListings("", "test", Set.of(), LocalDateTime.MIN, LocalDateTime.MIN, 1, true));
+        Exception exception = assertThrows(CurrencyNotFoundException.class, () -> listingsDtoService.getListings("", "test", Set.of(), LocalDateTime.MIN, LocalDateTime.MIN, 1, true));
         assertTrue(exception.getMessage().contains("Invalid currency code"));
     }
 
@@ -65,7 +71,7 @@ class ListingsDtoServiceTest {
         when(gpuModelService.getModel(anyString())).thenReturn(Optional.empty());
 
         //when
-        Exception exception = assertThrows(DefaultProblem.class, () -> listingsDtoService.getListings("jakis model", "", Set.of(), LocalDateTime.MIN, LocalDateTime.MIN, 1, true));
+        Exception exception = assertThrows(InvalidModelNameException.class, () -> listingsDtoService.getListings("jakis model", "", Set.of(), LocalDateTime.MIN, LocalDateTime.MIN, 1, true));
         assertTrue(exception.getMessage().contains("Invalid model name"));
     }
 
@@ -96,13 +102,13 @@ class ListingsDtoServiceTest {
                 .build();
         when(currencyService.findByCode(eq("USD"))).thenReturn(Optional.of(usdCurrency));
         when(sellerService.getAll()).thenReturn(ResourceLoader.loadSellersFromFile());
-        when(gpuModelService.getAllModels()).thenReturn(ResourceLoader.loadGpuModelsFromFile());
+        when(gpuModelService.getAll()).thenReturn(ResourceLoader.loadGpuModelsFromFile());
         when(gpuListingService.getCheapestForModelAndSeller(any(), any()))
                 .thenAnswer(answer -> getCheapestForModelAndSeller(gpuListings, answer.getArgument(0), answer.getArgument(1)));
 
 
         //when
-        ListingsPageDto listingsPageDto = listingsDtoService.getCheapestPerModel("USD", Set.of());
+        ListingsPageDto listingsPageDto = listingsDtoService.getCheapest("", "USD", Set.of(), 1);
 
         //then
         List<ListingDto> cheapestListings = listingsPageDto.getListings();

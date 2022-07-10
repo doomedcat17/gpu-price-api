@@ -5,6 +5,7 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.listing.webclient.PoliteWebClient;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -37,6 +38,7 @@ class XkomSearchPagesCrawlerTest {
         List<Document> documents = xkomSearchPagesCrawler.getSearchPages(gpuModel, url);
 
         //then
+        Assertions.assertFalse(documents.isEmpty());
 
 
     }

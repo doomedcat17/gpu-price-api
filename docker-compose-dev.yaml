@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+    container_name: gpu-price
+    ports:
+      - "8080:8080"
+    networks:
+      - main
+    environment:
+      TZ: UTC
+      SPRING_PROFILES_ACTIVE: h2
+      REDIS_HOST: redis
+  redis:
+    image: redis:7.0.2-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - main
+networks:
+  main:

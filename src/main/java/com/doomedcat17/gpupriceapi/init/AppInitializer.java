@@ -5,9 +5,9 @@ import com.doomedcat17.gpupriceapi.domain.GpuModel;
 import com.doomedcat17.gpupriceapi.domain.Seller;
 import com.doomedcat17.gpupriceapi.exception.CurrencyNotFoundException;
 import com.doomedcat17.gpupriceapi.rates.provider.CurrencyProvider;
-import com.doomedcat17.gpupriceapi.service.CurrencyService;
-import com.doomedcat17.gpupriceapi.service.GpuModelService;
-import com.doomedcat17.gpupriceapi.service.SellerService;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
+import com.doomedcat17.gpupriceapi.service.model.GpuModelService;
+import com.doomedcat17.gpupriceapi.service.seller.SellerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +34,10 @@ public class AppInitializer implements CommandLineRunner {
 
     private volatile boolean isInitialized = false;
     //5 min
-    @Value("${doomedcat17.gpu-price-api.initOnStart}")
-    private volatile boolean initOnStart = false;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
-    private long ON_FALIURE_WAIT_TIME_MS = 5 * 60000L;
+    @Value("${doomedcat17.gpu-price-api.initOnStart:true}")
+    private volatile boolean initOnStart;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,7 +66,7 @@ public class AppInitializer implements CommandLineRunner {
     private void loadGpuModels() {
         log.info("Loading Gpu Models...");
         List<GpuModel> gpuModels = ResourceLoader.loadGpuModelsFromFile();
-        gpuModelService.saveAll(gpuModels);
+        gpuModels.forEach(gpuModelService::save);
         log.info("Gpu Models loaded!");
     }
 
@@ -76,12 +76,14 @@ public class AppInitializer implements CommandLineRunner {
             List<Currency> currencies = currencyProvider.getLatestRates();
             Map<String, String> currencySymbolsMap = ResourceLoader.loadCurrencySymbols();
             currencies.forEach(currency ->
-                    currency.setSymbol(currencySymbolsMap.get(currency.getCode())));
-            currencyService.updateCurrencies(currencies);
+            {
+                currency.setSymbol(currencySymbolsMap.get(currency.getCode()));
+                currencyService.save(currency);
+            });
             log.info("Currencies updated!");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
-            Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
+            Thread.sleep(ON_FALIURE_WAIT_TIME * 1000);
             loadCurrencies();
         }
     }
@@ -93,8 +95,8 @@ public class AppInitializer implements CommandLineRunner {
             Optional<Currency> foundCurrency = currencyService.findByCode(seller.getCurrency().getCode());
             if (foundCurrency.isPresent()) seller.setCurrency(foundCurrency.get());
             else throw new CurrencyNotFoundException(seller.getCurrency().getCode());
+            sellerService.save(seller);
         }
-        sellerService.saveAll(sellers);
         log.info("Sellers loaded!");
     }
 

@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @ConditionalOnProperty(prefix = "doomedcat17.gpu-price-api.scheduling", name = "enabled", havingValue = "true", matchIfMissing = true)
-
 public class SchedulingConfig {
 
 }

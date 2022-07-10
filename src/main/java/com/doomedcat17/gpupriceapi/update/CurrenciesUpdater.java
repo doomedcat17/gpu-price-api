@@ -2,7 +2,7 @@ package com.doomedcat17.gpupriceapi.update;
 
 import com.doomedcat17.gpupriceapi.domain.Currency;
 import com.doomedcat17.gpupriceapi.rates.provider.CurrencyProvider;
-import com.doomedcat17.gpupriceapi.service.CurrencyService;
+import com.doomedcat17.gpupriceapi.service.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +18,8 @@ public class CurrenciesUpdater implements Updater {
 
     private final CurrencyProvider currencyProvider;
     private final CurrencyService currencyService;
-    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time-ms}")
-    private long ON_FALIURE_WAIT_TIME_MS;
+    @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
+    private long ON_FALIURE_WAIT_TIME;
 
 
     @Override
@@ -35,11 +35,11 @@ public class CurrenciesUpdater implements Updater {
     private void updateCurrencies() throws InterruptedException {
         try {
             List<Currency> currencies = currencyProvider.getLatestRates();
-            currencyService.updateCurrencies(currencies);
+            currencies.forEach(currencyService::save);
             log.info("Currencies updated");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
-            Thread.sleep(ON_FALIURE_WAIT_TIME_MS);
+            Thread.sleep(ON_FALIURE_WAIT_TIME * 1000);
             updateCurrencies();
         }
     }

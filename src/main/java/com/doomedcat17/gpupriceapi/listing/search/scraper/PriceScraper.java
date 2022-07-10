@@ -13,7 +13,7 @@ public class PriceScraper {
         priceString = priceString.replaceAll("\\s", "")
                 .replace(currency.getSymbol(), "").trim();
         // polish Amazon uses coma instead of dot for floating point
-        if (!priceString.contains(".")) {
+        if (!priceString.contains(".") && priceString.contains(",")) {
             StringBuilder stringBuilder = new StringBuilder(priceString);
             int index = priceString.lastIndexOf(",");
             stringBuilder.replace(index, index + 1, ".");
@@ -21,7 +21,18 @@ public class PriceScraper {
         }
         priceString = priceString.replace(",", "");
         if (!priceString.isBlank()) {
-            return new BigDecimal(priceString);
+            try {
+                return new BigDecimal(priceString);
+            } catch (NumberFormatException e) {
+                return new BigDecimal(fixPriceString(priceString));
+            }
         } else return BigDecimal.ZERO;
+    }
+
+    private String fixPriceString(String priceString) {
+        for (char c : priceString.toCharArray()) {
+            if (!Character.isDigit(c) && c != '.') priceString = priceString.replace(String.valueOf(c), "");
+        }
+        return priceString;
     }
 }

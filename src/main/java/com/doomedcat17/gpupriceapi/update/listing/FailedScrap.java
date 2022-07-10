@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Getter
@@ -16,7 +16,7 @@ import java.util.Set;
 public class FailedScrap {
     private final GpuModel model;
 
-    private Set<Seller> sellers = new HashSet<>();
+    private List<Seller> sellers = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
