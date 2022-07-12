@@ -19,11 +19,10 @@ jobs:
         key: ${{secrets.VPS_KEY}}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          docker stack remove gpu-web-api
-          docker image rm gpu-api
           cd github-build
           rm -rf gpu-price-api
           git clone https://github.com/doomedcat17/gpu-price-api.git
           cd gpu-price-api
-          docker build -t gpu-api .
-          docker stack deploy -c docker-compose.yaml gpu-web-api
+          cp ${{secrets.PROPS_PATH}} src/main/resources/application-prod.yaml
+          docker compose build --no-cache web
+          docker compose up --force-recreate -d

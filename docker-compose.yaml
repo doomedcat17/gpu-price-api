@@ -1,31 +1,25 @@
 version: "3.8"
 services:
   web:
-    image: gpu-api:latest
+    build:
+      context: .
+    container_name: gpu-price-api
     ports:
-      - target: 8080
-        published: 80
-        mode: host
+      - "80:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_CONFIG_NAME=application-prod.yaml
-      - SPRING_CONFIG_LOCATION=file:///run/secrets/gpu-api-props.yaml
       - TZ=UTC
       - REDIS_HOST=redis
-    secrets:
-      - gpu-api-props.yaml
     depends_on:
       - redis
     networks:
       - main
   redis:
     image: redis:7.0.2-alpine
+    container_name: gpu-price-redis
     ports:
       - "6379:6379"
     networks:
       - main
-secrets:
-  gpu-api-props.yaml:
-    external: true
 networks:
   main:
