@@ -28,5 +28,5 @@ logging:
 doomedcat17:
   gpu-price-api:
     initOnStart: true
-    on-failure-wait-time: 30000
+    on-failure-wait-time: 300
     page-size: 50
