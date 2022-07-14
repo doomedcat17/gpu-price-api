@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: simple
   sql:
     init:
       mode: never
@@ -16,7 +18,6 @@ spring:
     url: jdbc:h2:mem:test
 doomedcat17:
   gpu-price-api:
-    initOnStart: true
     on-failure-wait-time-ms: 30000
     scheduling:
       enabled: true

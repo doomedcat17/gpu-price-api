@@ -36,7 +36,7 @@ public class ScheduledUpdates {
     private final GpuListingLogService gpuListingLogService;
     @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
     private long ON_FALIURE_WAIT_TIME;
-    @Value("${doomedcat17.gpu-price-api.number-of-update-threads:2}")
+    @Value("${doomedcat17.gpu-price-api.number-of-update-threads:1}")
     private int NUMBER_OF_UPDATE_THREADS;
 
     @Scheduled(fixedRateString = "PT24H", initialDelay = 1000)
