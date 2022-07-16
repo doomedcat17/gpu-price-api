@@ -3,6 +3,8 @@
 gpu-price-api is Java REST app for collecting gpu prices from popular online retailers (Amazon, X-KOM, Morele.net) via
 webscraping.
 
+**The API is also available as a web app [here](https://doomedcat17.github.io/gpu-price-api/).**
+
 - [How it works](#how-it-works)
 - [Setup](#setup)
   - [Maven](#maven)
