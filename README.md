@@ -1,6 +1,6 @@
-# gpu-price-api - api for collecting data about gpu prices
+# gpu-price-api - API for collecting data about GPU prices
 
-gpu-price-apo is Java REST app for collecting gpu prices from popular online retailers (Amazon, X-KOM, Morele.net) via
+gpu-price-api is Java REST app for collecting gpu prices from popular online retailers (Amazon, X-KOM, Morele.net) via
 webscraping.
 
 - [How it works](#how-it-works)
