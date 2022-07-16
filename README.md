@@ -97,7 +97,7 @@ Property                                             | Default value | Descripti
 
 #### Listings
 
-Retruns listings based on parameters
+Returns listings based on parameters
 
 ```
 /api/v1/gpu/listings
@@ -115,7 +115,7 @@ Retruns listings based on parameters
 
 #### Latest listings
 
-Retruns latest available listings. It's cached, so it's faster than previous endpoint.
+Returns latest available listings. It's cached, so it's faster than previous endpoint.
 
 ```
 /api/v1/gpu/listings/latest
@@ -130,7 +130,7 @@ Retruns latest available listings. It's cached, so it's faster than previous end
 
 #### Cheapest listings
 
-Retruns cheapest available listings.
+Returns cheapest available listings.
 
 ```
 /api/v1/gpu/listings/latest
@@ -232,7 +232,7 @@ Retruns cheapest available listings.
 
 #### Sellers
 
-Retruns all sellers.
+Returns all sellers.
 
 ```
 /api/v1/sellers
