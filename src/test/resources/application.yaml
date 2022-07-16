@@ -17,12 +17,13 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: password
-    url: jdbc:h2:file:./gpu-price-api-testDb
+    url: jdbc:h2:mem:gpu-price-api-testDb
   profiles:
     active: test
 doomedcat17:
   gpu-price-api:
-    initOnStart: false
+    initialization:
+      enabled: false
     on-failure-wait-time-ms: 30000
     scheduling:
       enabled: false

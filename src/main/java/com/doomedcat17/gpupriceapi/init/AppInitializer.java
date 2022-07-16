@@ -34,15 +34,13 @@ public class AppInitializer implements CommandLineRunner {
 
     private volatile boolean isInitialized = false;
     //5 min
-    @Value("${doomedcat17.gpu-price-api.initOnStart:true}")
-    private volatile boolean initOnStart;
     @Value("${doomedcat17.gpu-price-api.on-failure-wait-time:300}")
     private long ON_FALIURE_WAIT_TIME;
 
     @Override
     public void run(String... args) throws Exception {
         synchronized (this) {
-            if (!isInitialized && initOnStart) {
+            if (!isInitialized) {
                 init();
             }
             isInitialized = true;
@@ -83,6 +81,7 @@ public class AppInitializer implements CommandLineRunner {
             log.info("Currencies updated!");
         } catch (IOException e) {
             log.error("Currencies load error: " + e.getMessage());
+            e.printStackTrace();
             Thread.sleep(ON_FALIURE_WAIT_TIME * 1000);
             loadCurrencies();
         }
