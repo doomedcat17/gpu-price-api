@@ -20,7 +20,7 @@ Requests that return multiple items will be limited to 50 results by default. **
 API uses exchange rates from [NBP API](http://api.nbp.pl/). It's updated Monday to Friday around 12:30 p.m. So the exchange rate may sometimes not be very accurate. Keep this in mind if you want accurate currency conversions. Therefore, the currency conversion option is optional in most cases.
 ### Endpoints
 
-#### Listings
+### Listings
 
 Returns listings based on parameters
 
@@ -38,7 +38,7 @@ https://gpuapi.bieda.it/api/v1/gpu/listings
 | available_only  | *false*  | Returns all listings that are currently available.|
 | page  | *1*  | Pagination parameter. Max 50 results per page.|
 
-#### Latest listings
+### Latest listings
 
 Returns latest available listings. It's cached, so it's faster than previous endpoint.
 
@@ -53,7 +53,7 @@ https://gpuapi.bieda.it/api/v1/gpu/listings/latest
 | currency  | None  | Returnes lisitngs with prices in specified currency. If not specified, prices remain in the shops' original currencies.|
 | page  | *1*  | Pagination parameter. Max 50 results per page.|
 
-#### Cheapest listings
+### Cheapest listings
 
 Returns cheapest available listings.
 
@@ -155,7 +155,7 @@ https://gpuapi.bieda.it/api/v1/gpu/listings/cheapest
 </p>
 </details>
 
-#### Sellers
+### Sellers
 
 Returns all sellers.
 
@@ -204,7 +204,7 @@ https://gpuapi.bieda.it/api/v1/sellers
 </p>
 </details>
 
-#### GPU Models
+### GPU Models
 
 Returns GPU Models
 
@@ -264,7 +264,7 @@ https://gpuapi.bieda.it/api/v1/gpu/models
 </p>
 </details>
 
-#### Currencies
+### Currencies
 
 Returns all currencies available in the API
 
@@ -419,7 +419,7 @@ https://gpuapi.bieda.it/api/v1/currencies
 </p>
 </details>
 
-#### Update
+### Update
 
 Returns date of latest API update
 
@@ -435,7 +435,7 @@ https://gpuapi.bieda.it/api/v1/update
 }
 ```
 
-### Error Responses
+## Error Responses
 
 Table of possible error responses
 
